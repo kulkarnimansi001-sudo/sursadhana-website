@@ -1,4 +1,4 @@
-/* Dynamic content from Firestore — News, Achievements, Gallery, Videos */
+/* Dynamic content from Firestore — News, Achievements, Gallery, Videos, Teacher Photos */
 import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy, limit, where }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -143,7 +143,37 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 
+/* ── Teacher Photos ──────────────────────────────────────────────── */
+async function loadTeacherPhotos() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_teacher_photos'),
+      orderBy('order', 'asc')
+    ));
+    if (snap.empty) return;
+    const photos = snap.docs.map(d => d.data().imageUrl).filter(Boolean);
+    if (!photos.length) return;
+    // Replace main photo
+    const mainImg = document.getElementById('teacherMainImg');
+    if (mainImg) mainImg.src = photos[0];
+    // Replace thumbnails
+    const thumbs = document.getElementById('teacherThumbs');
+    if (thumbs) {
+      thumbs.innerHTML = '';
+      photos.forEach((url, i) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = '';
+        if (i === 0) img.className = 'active';
+        img.onclick = () => setTeacherPhoto(img);
+        thumbs.appendChild(img);
+      });
+    }
+  } catch(e) { console.error('Teacher photos error', e); }
+}
+
 /* ── Init ────────────────────────────────────────────────────────── */
+loadTeacherPhotos();
 loadNews();
 loadAchievements();
 loadGallery();
