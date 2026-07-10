@@ -1,0 +1,150 @@
+/* Dynamic content from Firestore — News, Achievements, Gallery, Videos */
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit, where }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBpCH8ajVXiLcoEGc7vkIm8EmTkuYCY61o",
+  authDomain:        "music-class-83080.firebaseapp.com",
+  projectId:         "music-class-83080",
+  storageBucket:     "music-class-83080.firebasestorage.app",
+  messagingSenderId: "663663281900",
+  appId:             "1:663663281900:web:c320801ef06e18212607c9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+}
+
+/* ── News & Updates ──────────────────────────────────────────────── */
+async function loadNews() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_news'),
+      where('published', '==', true),
+      orderBy('date', 'desc'),
+      limit(6)
+    ));
+    if (snap.empty) return;
+    const grid  = document.getElementById('newsGrid');
+    const empty = document.getElementById('newsEmpty');
+    if (empty) empty.remove();
+    snap.forEach(doc => {
+      const d = doc.data();
+      const card = document.createElement('div');
+      card.className = 'news-card animate-on-scroll';
+      card.innerHTML = `
+        <div class="news-date">${fmtDate(d.date)}</div>
+        <div class="news-title">${d.title || ''}</div>
+        <div class="news-body">${d.body || ''}</div>
+      `;
+      grid.appendChild(card);
+      observer.observe(card);
+    });
+  } catch(e) { console.error('News load error', e); }
+}
+
+/* ── Achievements ────────────────────────────────────────────────── */
+async function loadAchievements() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_achievements'),
+      where('published', '==', true),
+      orderBy('date', 'desc'),
+      limit(8)
+    ));
+    if (snap.empty) return;
+    const grid  = document.getElementById('achievementsGrid');
+    const empty = document.getElementById('achievementsEmpty');
+    if (empty) empty.remove();
+    snap.forEach(doc => {
+      const d = doc.data();
+      const card = document.createElement('div');
+      card.className = 'achievement-card animate-on-scroll';
+      card.innerHTML = `
+        <div class="achievement-icon">${d.icon || '🏆'}</div>
+        <div class="achievement-name">${d.name || ''}</div>
+        <div class="achievement-text">${d.text || ''}</div>
+        <div class="achievement-date">${fmtDate(d.date)}</div>
+      `;
+      grid.appendChild(card);
+      observer.observe(card);
+    });
+  } catch(e) { console.error('Achievements load error', e); }
+}
+
+/* ── Dynamic Gallery Photos ──────────────────────────────────────── */
+async function loadGallery() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_gallery'),
+      where('published', '==', true),
+      orderBy('date', 'desc'),
+      limit(8)
+    ));
+    if (snap.empty) return;
+    const grid = document.getElementById('galleryGrid');
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!d.imageUrl) return;
+      const item = document.createElement('div');
+      item.className = 'gallery-item animate-on-scroll';
+      item.onclick = () => openLightbox(d.imageUrl);
+      item.innerHTML = `
+        <img src="${d.imageUrl}" alt="${d.caption || 'SurSadhana'}" loading="lazy"/>
+        <div class="gallery-overlay"><span>View</span></div>
+      `;
+      grid.appendChild(item);
+      observer.observe(item);
+    });
+  } catch(e) { console.error('Gallery load error', e); }
+}
+
+/* ── Dynamic Videos ──────────────────────────────────────────────── */
+async function loadVideos() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_videos'),
+      where('published', '==', true),
+      orderBy('date', 'desc'),
+      limit(6)
+    ));
+    if (snap.empty) return;
+    const grid = document.getElementById('videosGrid');
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!d.youtubeId) return;
+      const card = document.createElement('div');
+      card.className = 'video-card animate-on-scroll';
+      card.innerHTML = `
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/${d.youtubeId}"
+            title="${d.title || 'Performance'}" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">${d.tag || 'Performance'}</span>
+          <p>${d.title || ''}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+      observer.observe(card);
+    });
+  } catch(e) { console.error('Videos load error', e); }
+}
+
+/* ── Shared observer for dynamically added cards ─────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+/* ── Init ────────────────────────────────────────────────────────── */
+loadNews();
+loadAchievements();
+loadGallery();
+loadVideos();
