@@ -24,19 +24,22 @@ navLinks.querySelectorAll('a').forEach(a => {
 });
 
 /* ── FLOATING MUSIC NOTES in hero ────────────────────────────────── */
-const notes  = ['♩','♪','♫','♬','𝄞','𝄢','🎵','🎶'];
-const colors = ['rgba(200,134,10,.7)', 'rgba(255,255,255,.4)', 'rgba(255,200,100,.5)'];
+const notes  = ['♩','♪','♫','♬','𝄞','𝄢','🎵','🎶','सा','रे','ग','म','प','ध','नि'];
+const colors = ['rgba(200,134,10,.7)', 'rgba(255,255,255,.4)', 'rgba(255,200,100,.5)', 'rgba(255,220,150,.6)'];
 const container = document.getElementById('heroNotes');
 
-for (let i = 0; i < 18; i++) {
+for (let i = 0; i < 24; i++) {
   const el = document.createElement('span');
   el.className = 'music-note';
-  el.textContent = notes[Math.floor(Math.random() * notes.length)];
+  const note = notes[Math.floor(Math.random() * notes.length)];
+  el.textContent = note;
+  const isSargam = 'साreregamapadhanि'.includes(note) || ['सा','रे','ग','म','प','ध','नि'].includes(note);
   el.style.cssText = `
     left: ${Math.random() * 100}%;
     top:  ${Math.random() * 100}%;
     color: ${colors[Math.floor(Math.random() * colors.length)]};
-    font-size: ${.9 + Math.random() * 1.6}rem;
+    font-size: ${(isSargam ? 1.1 : .9) + Math.random() * 1.4}rem;
+    font-family: ${isSargam ? "'Noto Sans Devanagari', sans-serif" : 'inherit'};
     animation-duration: ${4 + Math.random() * 6}s;
     animation-delay: ${-Math.random() * 6}s;
   `;
