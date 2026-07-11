@@ -310,7 +310,7 @@ a  { text-decoration: none; color: inherit; }
   background: rgba(0,0,0,.92); align-items: center; justify-content: center;
 }
 .lightbox.open { display: flex; animation: fadeIn .2s ease; }
-.lightbox img  { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
+.lightbox img  { max-width: calc(100vw - 140px); max-height: 90vh; object-fit: contain; border-radius: 8px; transition: opacity .2s ease; }
 .lightbox-close {
   position: absolute; top: 20px; right: 24px;
   background: rgba(255,255,255,.15); border: none;
@@ -318,6 +318,16 @@ a  { text-decoration: none; color: inherit; }
   border-radius: 50%; cursor: pointer; transition: background .2s;
 }
 .lightbox-close:hover { background: rgba(255,255,255,.3); }
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.4);
+  color: #fff; font-size: 2rem; width: 52px; height: 52px;
+  border-radius: 50%; cursor: pointer; transition: background .2s;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,.35); }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
 
 /* ── VIDEOS ───────────────────────────────────────────────────────── */
 .videos-grid {

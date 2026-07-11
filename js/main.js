@@ -77,18 +77,48 @@ const statObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
 
 /* ── GALLERY LIGHTBOX ─────────────────────────────────────────────── */
+let lbImages = [];
+let lbIndex  = 0;
+
+function buildLbImages() {
+  lbImages = Array.from(document.querySelectorAll('#galleryGrid .gallery-item img'))
+    .map(img => img.src);
+}
+
 function openLightbox(src) {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightboxImg').src = src;
-  lb.classList.add('open');
+  buildLbImages();
+  lbIndex = lbImages.indexOf(src);
+  if (lbIndex === -1) lbIndex = 0;
+  lbShow();
+  document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
+function lbShow() {
+  const img = document.getElementById('lightboxImg');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = lbImages[lbIndex];
+    img.style.opacity = '1';
+  }, 150);
+}
+
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  lbShow();
+}
+
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
 }
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox();
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowRight')  lbNav(1);
+  if (e.key === 'ArrowLeft')   lbNav(-1);
 });
 
 /* ── TEACHER PHOTO SWITCHER ───────────────────────────────────────── */
