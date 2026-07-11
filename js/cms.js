@@ -20,6 +20,16 @@ function fmtDate(iso) {
   return new Date(iso).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
 }
 
+function h(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function safeUrl(url) {
+  if (!url) return '';
+  const u = String(url).trim();
+  return (u.startsWith('http://') || u.startsWith('https://') || u.startsWith('/')) ? u : '';
+}
+
 /* ── News & Updates ──────────────────────────────────────────────── */
 async function loadNews() {
   try {
@@ -39,8 +49,8 @@ async function loadNews() {
       card.className = 'news-card animate-on-scroll';
       card.innerHTML = `
         <div class="news-date">${fmtDate(d.date)}</div>
-        <div class="news-title">${d.title || ''}</div>
-        <div class="news-body">${d.body || ''}</div>
+        <div class="news-title">${h(d.title)}</div>
+        <div class="news-body">${h(d.body)}</div>
       `;
       grid.appendChild(card);
       observer.observe(card);
@@ -66,9 +76,9 @@ async function loadAchievements() {
       const card = document.createElement('div');
       card.className = 'achievement-card animate-on-scroll';
       card.innerHTML = `
-        <div class="achievement-icon">${d.icon || '🏆'}</div>
-        <div class="achievement-name">${d.name || ''}</div>
-        <div class="achievement-text">${d.text || ''}</div>
+        <div class="achievement-icon">${h(d.icon) || '🏆'}</div>
+        <div class="achievement-name">${h(d.name)}</div>
+        <div class="achievement-text">${h(d.text)}</div>
         <div class="achievement-date">${fmtDate(d.date)}</div>
       `;
       grid.appendChild(card);
@@ -93,9 +103,10 @@ async function loadGallery() {
       if (!d.imageUrl) return;
       const item = document.createElement('div');
       item.className = 'gallery-item animate-on-scroll';
-      item.onclick = () => openLightbox(d.imageUrl);
+      const imgUrl = safeUrl(d.imageUrl);
+      item.onclick = () => openLightbox(imgUrl);
       item.innerHTML = `
-        <img src="${d.imageUrl}" alt="${d.caption || 'SurSadhana'}" loading="lazy"/>
+        <img src="${h(imgUrl)}" alt="${h(d.caption) || 'SurSadhana'}" loading="lazy"/>
         <div class="gallery-overlay"><span>View</span></div>
       `;
       grid.appendChild(item);
@@ -120,16 +131,17 @@ async function loadVideos() {
       if (!d.youtubeId) return;
       const card = document.createElement('div');
       card.className = 'video-card animate-on-scroll';
+      const ytId = (d.youtubeId || '').replace(/[^a-zA-Z0-9_-]/g, '');
       card.innerHTML = `
         <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/${d.youtubeId}"
-            title="${d.title || 'Performance'}" frameborder="0"
+          <iframe src="https://www.youtube.com/embed/${ytId}"
+            title="${h(d.title) || 'Performance'}" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="video-info">
-          <span class="video-tag">${d.tag || 'Performance'}</span>
-          <p>${d.title || ''}</p>
+          <span class="video-tag">${h(d.tag) || 'Performance'}</span>
+          <p>${h(d.title)}</p>
         </div>
       `;
       grid.appendChild(card);
@@ -155,14 +167,15 @@ async function loadTeacherPhotos() {
     if (!photos.length) return;
     // Replace main photo
     const mainImg = document.getElementById('teacherMainImg');
-    if (mainImg) mainImg.src = photos[0];
-    // Replace thumbnails
+    if (mainImg) mainImg.src = safeUrl(photos[0]);
     const thumbs = document.getElementById('teacherThumbs');
     if (thumbs) {
       thumbs.innerHTML = '';
       photos.forEach((url, i) => {
+        const safeImg = safeUrl(url);
+        if (!safeImg) return;
         const img = document.createElement('img');
-        img.src = url;
+        img.src = safeImg;
         img.alt = '';
         if (i === 0) img.className = 'active';
         img.onclick = () => setTeacherPhoto(img);
