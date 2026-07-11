@@ -1,6 +1,6 @@
 /* Dynamic content from Firestore — News, Achievements, Gallery, Videos, Teacher Photos */
 import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit, where }
+import { getFirestore, collection, getDocs, query, orderBy, limit }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -33,18 +33,15 @@ function safeUrl(url) {
 /* ── News & Updates ──────────────────────────────────────────────── */
 async function loadNews() {
   try {
-    const snap = await getDocs(query(
-      collection(db, 'website_news'),
-      where('published', '==', true),
-      orderBy('date', 'desc'),
-      limit(6)
-    ));
+    const snap = await getDocs(query(collection(db, 'website_news'), orderBy('date', 'desc'), limit(20)));
     if (snap.empty) return;
     const grid  = document.getElementById('newsGrid');
     const empty = document.getElementById('newsEmpty');
     if (empty) empty.remove();
+    let count = 0;
     snap.forEach(doc => {
       const d = doc.data();
+      if (d.published === false || count >= 6) return; count++;
       const card = document.createElement('div');
       card.className = 'news-card animate-on-scroll';
       card.innerHTML = `
@@ -61,18 +58,15 @@ async function loadNews() {
 /* ── Achievements ────────────────────────────────────────────────── */
 async function loadAchievements() {
   try {
-    const snap = await getDocs(query(
-      collection(db, 'website_achievements'),
-      where('published', '==', true),
-      orderBy('date', 'desc'),
-      limit(8)
-    ));
+    const snap = await getDocs(query(collection(db, 'website_achievements'), orderBy('date', 'desc'), limit(20)));
     if (snap.empty) return;
     const grid  = document.getElementById('achievementsGrid');
     const empty = document.getElementById('achievementsEmpty');
     if (empty) empty.remove();
+    let count = 0;
     snap.forEach(doc => {
       const d = doc.data();
+      if (d.published === false || count >= 8) return; count++;
       const card = document.createElement('div');
       card.className = 'achievement-card animate-on-scroll';
       card.innerHTML = `
@@ -90,17 +84,13 @@ async function loadAchievements() {
 /* ── Dynamic Gallery Photos ──────────────────────────────────────── */
 async function loadGallery() {
   try {
-    const snap = await getDocs(query(
-      collection(db, 'website_gallery'),
-      where('published', '==', true),
-      orderBy('date', 'desc'),
-      limit(8)
-    ));
+    const snap = await getDocs(query(collection(db, 'website_gallery'), orderBy('date', 'desc'), limit(30)));
     if (snap.empty) return;
     const grid = document.getElementById('galleryGrid');
+    let count = 0;
     snap.forEach(doc => {
       const d = doc.data();
-      if (!d.imageUrl) return;
+      if (d.published === false || !d.imageUrl || count >= 8) return; count++;
       const item = document.createElement('div');
       item.className = 'gallery-item animate-on-scroll';
       const imgUrl = safeUrl(d.imageUrl);
@@ -118,17 +108,13 @@ async function loadGallery() {
 /* ── Dynamic Videos ──────────────────────────────────────────────── */
 async function loadVideos() {
   try {
-    const snap = await getDocs(query(
-      collection(db, 'website_videos'),
-      where('published', '==', true),
-      orderBy('date', 'desc'),
-      limit(6)
-    ));
+    const snap = await getDocs(query(collection(db, 'website_videos'), orderBy('date', 'desc'), limit(20)));
     if (snap.empty) return;
     const grid = document.getElementById('videosGrid');
+    let count = 0;
     snap.forEach(doc => {
       const d = doc.data();
-      if (!d.youtubeId) return;
+      if (d.published === false || !d.youtubeId || count >= 6) return; count++;
       const card = document.createElement('div');
       card.className = 'video-card animate-on-scroll';
       const ytId = (d.youtubeId || '').replace(/[^a-zA-Z0-9_-]/g, '');
