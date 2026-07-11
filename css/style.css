@@ -70,6 +70,8 @@ a  { text-decoration: none; color: inherit; }
 .btn-outline:hover { background: var(--maroon); color: #fff; transform: translateY(-2px); }
 .btn-ghost   { background: rgba(255,255,255,.15); color: #fff; border: 1.5px solid rgba(255,255,255,.4); backdrop-filter: blur(8px); }
 .btn-ghost:hover { background: rgba(255,255,255,.25); transform: translateY(-2px); }
+.btn-outline-light { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.75); }
+.btn-outline-light:hover { background: #fff; color: var(--maroon); transform: translateY(-2px); }
 
 /* ── ANIMATIONS ───────────────────────────────────────────────────── */
 @keyframes fadeUp   { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }

@@ -1,6 +1,6 @@
 /* Dynamic content from Firestore — News, Achievements, Gallery, Videos, Teacher Photos */
 import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit }
+import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy, limit }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -172,6 +172,36 @@ async function loadTeacherPhotos() {
 }
 
 /* ── Init ────────────────────────────────────────────────────────── */
+/* ── Teacher Bio ─────────────────────────────────────────────────── */
+async function loadTeacherBio() {
+  try {
+    const snap = await getDoc(doc(db, 'website_teacher', 'main'));
+    if (!snap.exists()) return;
+    const d = snap.data();
+
+    const nameEl = document.getElementById('teacherName');
+    if (nameEl && d.name) nameEl.textContent = d.name;
+
+    const badgeEl = document.getElementById('teacherBadge');
+    if (badgeEl && d.badge) badgeEl.textContent = d.badge;
+
+    const bio1El = document.getElementById('teacherBio1');
+    if (bio1El && d.bio1) bio1El.innerHTML = h(d.bio1).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const bio2El = document.getElementById('teacherBio2');
+    if (bio2El && d.bio2) bio2El.innerHTML = h(d.bio2).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const bio3El = document.getElementById('teacherBio3');
+    if (bio3El && d.bio3) bio3El.innerHTML = h(d.bio3).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    const hlEl = document.getElementById('teacherHighlights');
+    if (hlEl && d.highlights && d.highlights.length) {
+      hlEl.innerHTML = d.highlights.map(item =>
+        `<div class="highlight-item"><span class="highlight-icon">${h(item.icon||'')}</span><span>${h(item.text||'')}</span></div>`
+      ).join('');
+    }
+  } catch(e) { console.error('Teacher bio error', e); }
+}
+
+loadTeacherBio();
 loadTeacherPhotos();
 loadNews();
 loadAchievements();
