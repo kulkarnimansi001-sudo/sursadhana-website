@@ -174,23 +174,7 @@
     <div class="section-label animate-on-scroll">Moments</div>
     <h2 class="section-title animate-on-scroll">Photo Gallery</h2>
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item animate-on-scroll" onclick="openLightbox('images/class/class1.jpg')">
-        <img src="images/class/class1.jpg" alt="SurSadhana Class" loading="lazy"/>
-        <div class="gallery-overlay"><span>View</span></div>
-      </div>
-      <div class="gallery-item animate-on-scroll delay-1" onclick="openLightbox('images/class/class2.jpg')">
-        <img src="images/class/class2.jpg" alt="SurSadhana Class" loading="lazy"/>
-        <div class="gallery-overlay"><span>View</span></div>
-      </div>
-      <div class="gallery-item animate-on-scroll delay-2" onclick="openLightbox('images/class/class3.jpg')">
-        <img src="images/class/class3.jpg" alt="SurSadhana Class" loading="lazy"/>
-        <div class="gallery-overlay"><span>View</span></div>
-      </div>
-      <div class="gallery-item animate-on-scroll" onclick="openLightbox('images/class/class4.jpg')">
-        <img src="images/class/class4.jpg" alt="SurSadhana Class" loading="lazy"/>
-        <div class="gallery-overlay"><span>View</span></div>
-      </div>
-      <!-- Dynamic photos from Firestore appended here -->
+      <!-- Loaded dynamically from Firestore via cms.js -->
     </div>
     <div class="gallery-more animate-on-scroll" id="galleryMore" style="display:none">
       <button class="btn btn-outline" onclick="loadMoreGallery()">Load More Photos</button>
@@ -213,34 +197,7 @@
     <h2 class="section-title animate-on-scroll">Performances</h2>
     <p class="section-intro animate-on-scroll">Watch our students and teacher perform at concerts, cultural events, and festivals across Maharashtra and India.</p>
     <div class="videos-grid" id="videosGrid">
-      <div class="video-card animate-on-scroll">
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/vkHBm6yMElI?start=4333" title="Performance 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="video-info">
-          <span class="video-tag">Performance</span>
-          <p>SurSadhana Performance</p>
-        </div>
-      </div>
-      <div class="video-card animate-on-scroll delay-1">
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/y3y5WJFDaW4" title="Performance 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="video-info">
-          <span class="video-tag">Performance</span>
-          <p>SurSadhana Performance</p>
-        </div>
-      </div>
-      <div class="video-card animate-on-scroll delay-2">
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/Wb8p8TWIUBE" title="Performance 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="video-info">
-          <span class="video-tag">Performance</span>
-          <p>SurSadhana Performance</p>
-        </div>
-      </div>
-      <!-- Dynamic videos from Firestore appended here -->
+      <!-- Loaded dynamically from Firestore via cms.js -->
     </div>
   </div>
 </section>
@@ -256,11 +213,7 @@
           <img src="images/teacher/teacher1.jpg" alt="Mansi Kulkarni Deshpande" id="teacherMainImg"/>
         </div>
         <div class="teacher-photo-thumbs" id="teacherThumbs">
-          <img src="images/teacher/teacher1.jpg" alt="" onclick="setTeacherPhoto(this)" class="active"/>
-          <img src="images/teacher/teacher2.jpg" alt="" onclick="setTeacherPhoto(this)"/>
-          <img src="images/teacher/teacher3.jpg" alt="" onclick="setTeacherPhoto(this)"/>
-          <img src="images/teacher/teacher4.jpg" alt="" onclick="setTeacherPhoto(this)"/>
-          <img src="images/teacher/teacher5.jpg" alt="" onclick="setTeacherPhoto(this)"/>
+          <!-- Loaded dynamically from Firestore via cms.js -->
         </div>
       </div>
       <div class="teacher-bio animate-on-scroll delay-1">
