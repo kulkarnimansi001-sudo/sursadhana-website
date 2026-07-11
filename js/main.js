@@ -38,7 +38,7 @@ for (let i = 0; i < 24; i++) {
     left: ${Math.random() * 100}%;
     top:  ${Math.random() * 100}%;
     color: ${colors[Math.floor(Math.random() * colors.length)]};
-    font-size: ${(isSargam ? 1.1 : .9) + Math.random() * 1.4}rem;
+    font-size: ${(isSargam ? 0.65 : .9) + Math.random() * (isSargam ? 0.6 : 1.2)}rem;
     font-family: ${isSargam ? "'Noto Sans Devanagari', sans-serif" : 'inherit'};
     animation-duration: ${4 + Math.random() * 6}s;
     animation-delay: ${-Math.random() * 6}s;
