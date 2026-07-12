@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learning Corner — SurSadhana Music Classes. Articles on music theory, raga guides, practice tips, exam preparation and student stories."/>
+  <title>Learning Corner | SurSadhana Music Classes</title>
+  <link rel="icon" href="images/logo.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.png" alt="SurSadhana"/>
+      <span>SurSadhana<br><small>Music Classes</small></span>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="guru.html">Guru</a></li>
+      <li><a href="blog.html" class="active">Learn</a></li>
+      <li><a href="index.html#news">News</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank">Student Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── PAGE HERO ───────────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label animate-fade-up">Knowledge &amp; Insights</div>
+    <h1 class="animate-fade-up delay-1">Learning Corner</h1>
+    <p class="animate-fade-up delay-2">
+      Explore articles on music theory, raga guides, practice techniques, exam tips, student stories
+      and everything that makes Indian classical music so beautiful.
+    </p>
+  </div>
+</section>
+
+<!-- ── BLOG ───────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+
+    <!-- Category filter -->
+    <div class="filter-bar" id="blogFilterBar">
+      <button class="filter-btn active" data-cat="all" onclick="filterBlog(this)">All Articles</button>
+      <button class="filter-btn" data-cat="Music Theory" onclick="filterBlog(this)">🎼 Music Theory</button>
+      <button class="filter-btn" data-cat="Raga Guide" onclick="filterBlog(this)">🎵 Raga Guide</button>
+      <button class="filter-btn" data-cat="Practice Tips" onclick="filterBlog(this)">🪘 Practice Tips</button>
+      <button class="filter-btn" data-cat="Exam Prep" onclick="filterBlog(this)">📝 Exam Prep</button>
+      <button class="filter-btn" data-cat="Student Stories" onclick="filterBlog(this)">🌟 Student Stories</button>
+      <button class="filter-btn" data-cat="Events" onclick="filterBlog(this)">🎭 Events</button>
+    </div>
+
+    <div class="blog-grid" id="blogGrid">
+      <!-- Loaded from Firestore, with static placeholders -->
+    </div>
+
+    <!-- Static placeholder cards (shown until Firestore loads) -->
+    <div id="blogPlaceholder" class="blog-grid">
+      <div class="blog-card" onclick="openBlogModal({title:'What is Riyaz and Why Does It Matter?',category:'Practice Tips',date:'2026-06-01',excerpt:'Riyaz — the disciplined, daily practice of music — is the foundation on which every classical musician builds their art.',body:'<p>Riyaz — the disciplined, daily practice of music — is the foundation on which every classical musician builds their art. The word Riyaz comes from the Urdu/Persian word meaning \"exercise\" or \"practice,\" but in the context of Indian classical music, it carries a much deeper meaning.</p><p>Consistent riyaz is not merely repetition. It is a meditative process — a dialogue between the musician and the music, where technique slowly dissolves into expression. Great maestros like Pt. Bhimsen Joshi and Ustad Rashid Khan were known to practice for 8-12 hours a day in their formative years.</p><p>For beginners, riyaz should begin with alankars (pattern exercises) on Sa-Re-Ga-Ma-Pa-Dha-Ni-Sa, moving to simple compositions as the voice or fingers develop fluency. Even 30-45 minutes of focused daily practice creates remarkable progress over months and years.</p><p>The key is consistency — not intensity. A student who practices 30 minutes every day will progress far faster than one who practices 3 hours occasionally.</p>',imageUrl:''})">
+        <div class="blog-card-img-placeholder">🪘</div>
+        <div class="blog-card-body">
+          <div class="blog-cat-tag">Practice Tips</div>
+          <div class="blog-card-title">What is Riyaz and Why Does It Matter?</div>
+          <div class="blog-card-excerpt">Riyaz — the disciplined daily practice of music — is the foundation on which every classical musician builds their art.</div>
+          <div class="blog-card-meta"><span>📅 June 2026</span><span>· 4 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" onclick="openBlogModal({title:'Understanding the Gandharva Examination System',category:'Exam Prep',date:'2026-05-15',excerpt:'A complete guide to the Akhil Bharatiya Gandharva Mahavidyalaya Mandal examination system — from Prarambhik to Sangeet Alankar.',body:'<p>The Akhil Bharatiya Gandharva Mahavidyalaya Mandal (ABGMM), Vashi, is one of the most respected examination bodies for Indian classical music. Their syllabus spans 8 levels — from Prarambhik (beginner) to the prestigious Sangeet Alankar (equivalent to a university degree).</p><p><strong>Examination Levels:</strong></p><p>1. Prarambhik (Introductory)<br>2. Prathamik (Elementary)<br>3. Poorv Madhyama (Pre-Intermediate)<br>4. Madhyama (Intermediate)<br>5. Sangeet Visharad Part 1<br>6. Sangeet Visharad Part 2<br>7. Sangeet Alankar Part 1<br>8. Sangeet Alankar Part 2</p><p>Each level covers specific ragas, talas, compositions and theoretical knowledge. Examinations are typically held annually and include both practical (singing/playing) and written theory components.</p><p>At SurSadhana, all our students follow the Gandharva syllabus, with preparation tailored to each level.</p>',imageUrl:''})">
+        <div class="blog-card-img-placeholder">📝</div>
+        <div class="blog-card-body">
+          <div class="blog-cat-tag">Exam Prep</div>
+          <div class="blog-card-title">Understanding the Gandharva Examination System</div>
+          <div class="blog-card-excerpt">A complete guide to the ABGMM examination — from Prarambhik to Sangeet Alankar and everything in between.</div>
+          <div class="blog-card-meta"><span>📅 May 2026</span><span>· 5 min read</span></div>
+        </div>
+      </div>
+      <div class="blog-card" onclick="openBlogModal({title:'Introduction to Raga Yaman',category:'Raga Guide',date:'2026-04-20',excerpt:'Raga Yaman is one of the most popular and widely taught ragas in Hindustani classical music. Learn its structure, mood and important compositions.',body:'<p>Raga Yaman (also spelled Yaman or Kalyan) is one of the most beloved and widely performed ragas in Hindustani classical music. It is considered the gateway raga for beginners entering the world of North Indian classical music.</p><p><strong>Structure (Aroha-Avaroha):</strong><br>Aroha: N R G M(tivra) P D N S\'<br>Avaroha: S\' N D P M(tivra) G R S</p><p><strong>Thaat:</strong> Kalyan<br><strong>Time:</strong> First prahar of night (7pm–10pm)<br><strong>Mood (Rasa):</strong> Shringara (romance), devotion, serenity</p><p><strong>Key characteristics:</strong><br>- All seven notes used<br>- Teevra Ma (sharp fourth) is the defining note<br>- Ni (Nishad) and Ga (Gandhar) are the vadi-samvadi<br>- Movements tend to be graceful and expansive</p><p>Raga Yaman is often the first full raga taught to classical students because its structure allows for beautiful alap development and it has a vast repertoire of bandishes (compositions) in different talas.</p>',imageUrl:''})">
+        <div class="blog-card-img-placeholder">🎵</div>
+        <div class="blog-card-body">
+          <div class="blog-cat-tag">Raga Guide</div>
+          <div class="blog-card-title">Introduction to Raga Yaman</div>
+          <div class="blog-card-excerpt">Raga Yaman is one of the most beloved ragas in Hindustani classical music. Learn its structure, mood and important compositions.</div>
+          <div class="blog-card-meta"><span>📅 April 2026</span><span>· 6 min read</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="blogEmpty" class="gallery-empty" style="display:none;margin-top:48px">
+      <div style="font-size:3rem;margin-bottom:12px">📚</div>
+      <p>No articles in this category yet. Check back soon!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── BLOG ARTICLE MODAL ──────────────────────────────────────────── -->
+<div class="blog-modal-overlay" id="blogModalOverlay" onclick="if(event.target===this)closeBlogModal()">
+  <div class="blog-modal">
+    <button class="blog-modal-close" onclick="closeBlogModal()">✕</button>
+    <img id="blogModalImg" src="" alt="" class="blog-modal-img" style="display:none"/>
+    <div class="blog-cat-tag" id="blogModalCat"></div>
+    <div class="blog-modal-title" id="blogModalTitle"></div>
+    <div class="blog-modal-meta"  id="blogModalMeta"></div>
+    <div class="blog-modal-body"  id="blogModalBody"></div>
+  </div>
+</div>
+
+<!-- ── NEWSLETTER / CTA ────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container" style="text-align:center">
+    <div class="section-label animate-on-scroll">Stay Inspired</div>
+    <h2 class="section-title animate-on-scroll">More articles coming soon</h2>
+    <p class="section-intro animate-on-scroll" style="margin:0 auto 32px">
+      We regularly publish guides on ragas, music theory, practice techniques and student journeys.
+      Follow us or contact us to stay updated.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" class="animate-on-scroll">
+      <a href="index.html#contact" class="btn btn-gold">Get in Touch</a>
+      <a href="https://wa.me/918308047545" class="btn btn-outline" target="_blank">💬 WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="images/logo.png" alt="SurSadhana"/>
+      <div>
+        <div class="footer-name">SurSadhana Music Classes</div>
+        <div class="footer-tag">Sadhana · Sur · Samarpan</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#courses">Courses</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="guru.html">Guru</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="footer-portal">
+      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank">🎓 Student Portal</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 SurSadhana Music Classes, Pune. All rights reserved.</div>
+</footer>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+let allPosts   = [];
+let activeCat  = 'all';
+
+function filterBlog(btn) {
+  document.querySelectorAll('#blogFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  renderPosts();
+}
+function renderPosts() {
+  const grid  = document.getElementById('blogGrid');
+  const empty = document.getElementById('blogEmpty');
+  const ph    = document.getElementById('blogPlaceholder');
+  const posts = activeCat === 'all' ? allPosts : allPosts.filter(p => p.category === activeCat);
+  if (allPosts.length === 0) return; // keep static placeholders
+  ph.style.display = 'none';
+  grid.innerHTML   = '';
+  if (!posts.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  posts.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'blog-card animate-on-scroll';
+    card.onclick = () => openBlogModal(p);
+    card.innerHTML = p.imageUrl
+      ? `<img src="${h(p.imageUrl)}" alt="" class="blog-card-img" loading="lazy"/>`
+      : `<div class="blog-card-img-placeholder">${catIcon(p.category)}</div>`;
+    card.innerHTML += `
+      <div class="blog-card-body">
+        <div class="blog-cat-tag">${h(p.category||'General')}</div>
+        <div class="blog-card-title">${h(p.title)}</div>
+        <div class="blog-card-excerpt">${h(p.excerpt||'')}</div>
+        <div class="blog-card-meta"><span>📅 ${fmtDate(p.date)}</span></div>
+      </div>`;
+    grid.appendChild(card);
+    obs.observe(card);
+  });
+}
+function catIcon(c) {
+  const m = {'Music Theory':'🎼','Raga Guide':'🎵','Practice Tips':'🪘','Exam Prep':'📝','Student Stories':'🌟','Events':'🎭'};
+  return m[c] || '📚';
+}
+function openBlogModal(p) {
+  const img = document.getElementById('blogModalImg');
+  if (p.imageUrl) { img.src = p.imageUrl; img.style.display = 'block'; }
+  else img.style.display = 'none';
+  document.getElementById('blogModalCat').textContent   = p.category || '';
+  document.getElementById('blogModalTitle').textContent = p.title    || '';
+  document.getElementById('blogModalMeta').textContent  = p.date ? `📅 ${fmtDate(p.date)}` : '';
+  document.getElementById('blogModalBody').innerHTML    = p.body     || '';
+  document.getElementById('blogModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBlogModal() {
+  document.getElementById('blogModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function fmtDate(d) { if(!d) return ''; try { return new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}); } catch(_){return d;} }
+function h(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeBlogModal(); });
+
+const obs = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+document.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+});
+document.getElementById('hamburger').addEventListener('click', () =>
+  document.getElementById('navLinks').classList.toggle('open'));
+</script>
+<script type="module" src="js/blog-cms.js"></script>
+</body>
+</html>

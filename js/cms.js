@@ -201,9 +201,39 @@ async function loadTeacherBio() {
   } catch(e) { console.error('Teacher bio error', e); }
 }
 
+/* ── Testimonials ────────────────────────────────────────────────── */
+async function loadTestimonials() {
+  try {
+    const snap = await getDocs(query(collection(db, 'website_testimonials'), orderBy('order', 'asc'), limit(6)));
+    if (snap.empty) return; // keep static fallback cards
+    const grid = document.getElementById('testimonialsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      if (d.published === false) return;
+      const initials = (d.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const avatar = d.photoUrl
+        ? `<img src="${h(d.photoUrl)}" alt="${h(d.name)}" class="testimonial-avatar"/>`
+        : `<div class="testimonial-initials">${h(initials)}</div>`;
+      const card = document.createElement('div');
+      card.className = 'testimonial-card animate-on-scroll';
+      card.innerHTML = `
+        ${avatar}
+        <div class="testimonial-quote">${h(d.quote)}</div>
+        <div class="testimonial-name">${h(d.name)}</div>
+        <div class="testimonial-role">${h(d.role||'Student')}</div>
+      `;
+      grid.appendChild(card);
+      observer.observe(card);
+    });
+  } catch(e) { console.error('Testimonials load error', e); }
+}
+
 loadTeacherBio();
 loadTeacherPhotos();
 loadNews();
 loadAchievements();
 loadGallery();
 loadVideos();
+loadTestimonials();

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Photo Gallery — SurSadhana Music Classes. Annual concerts, cultural programs, Gurpurnima, Riyaz sessions, ceremonies and more."/>
+  <title>Gallery | SurSadhana Music Classes</title>
+  <link rel="icon" href="images/logo.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.png" alt="SurSadhana"/>
+      <span>SurSadhana<br><small>Music Classes</small></span>
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#courses">Courses</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="guru.html">Guru</a></li>
+      <li><a href="blog.html">Learn</a></li>
+      <li><a href="index.html#news">News</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank">Student Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── PAGE HERO ───────────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label animate-fade-up">Moments &amp; Memories</div>
+    <h1 class="animate-fade-up delay-1">Photo Gallery</h1>
+    <p class="animate-fade-up delay-2">
+      Concerts, cultural programs, Gurpurnima celebrations, Riyaz sessions, award ceremonies and more —
+      every photo tells a story of music, dedication and joy.
+    </p>
+  </div>
+</section>
+
+<!-- ── GALLERY ─────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+
+    <!-- Category filters -->
+    <div class="filter-bar" id="catFilterBar">
+      <button class="filter-btn active" data-cat="all" onclick="filterGallery(this)">All Photos</button>
+      <button class="filter-btn" data-cat="Annual Concert" onclick="filterGallery(this)">🎤 Annual Concert</button>
+      <button class="filter-btn" data-cat="Gurpurnima" onclick="filterGallery(this)">🙏 Gurpurnima</button>
+      <button class="filter-btn" data-cat="Competitions" onclick="filterGallery(this)">🏆 Competitions</button>
+      <button class="filter-btn" data-cat="Workshops" onclick="filterGallery(this)">📚 Workshops</button>
+      <button class="filter-btn" data-cat="Riyaz" onclick="filterGallery(this)">🎵 Riyaz Sessions</button>
+      <button class="filter-btn" data-cat="Ceremony" onclick="filterGallery(this)">🎭 Ceremonies</button>
+      <button class="filter-btn" data-cat="Other" onclick="filterGallery(this)">📸 Other</button>
+    </div>
+
+    <!-- Year filter -->
+    <div class="filter-bar" id="yearFilterBar" style="margin-top:-20px;margin-bottom:28px">
+      <button class="filter-btn active" data-year="all" onclick="filterYear(this)">All Years</button>
+      <!-- Years added dynamically -->
+    </div>
+
+    <!-- Photo count -->
+    <div id="photoCount" style="text-align:right;font-size:.82rem;color:var(--text-muted);margin-bottom:16px"></div>
+
+    <!-- Grid -->
+    <div class="gallery-full-grid" id="galleryFullGrid">
+      <!-- Loaded from Firestore -->
+    </div>
+    <div id="galleryLoading" style="text-align:center;padding:60px 20px;color:var(--text-muted)">
+      <div style="font-size:2rem;margin-bottom:12px">🖼️</div>
+      Loading photos…
+    </div>
+    <div id="galleryEmpty" class="gallery-empty" style="display:none">
+      <div style="font-size:3rem;margin-bottom:12px">📷</div>
+      <p>No photos in this category yet. Check back soon!</p>
+    </div>
+
+    <!-- Load more -->
+    <div id="loadMoreWrap" style="text-align:center;margin-top:40px;display:none">
+      <button class="btn btn-outline" onclick="loadMorePhotos()">Load More Photos</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── LIGHTBOX ────────────────────────────────────────────────────── -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();lbNav(-1)">&#8249;</button>
+  <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()"/>
+  <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();lbNav(1)">&#8250;</button>
+  <div id="lightboxCaption" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+       color:#fff;font-size:.85rem;text-align:center;opacity:.8;max-width:500px"></div>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="images/logo.png" alt="SurSadhana"/>
+      <div>
+        <div class="footer-name">SurSadhana Music Classes</div>
+        <div class="footer-tag">Sadhana · Sur · Samarpan</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#courses">Courses</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="guru.html">Guru</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="footer-portal">
+      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank">🎓 Student Portal</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 SurSadhana Music Classes, Pune. All rights reserved.</div>
+</footer>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+let allPhotos = [];
+let filtered  = [];
+let lbIndex   = 0;
+let activeCat  = 'all';
+let activeYear = 'all';
+
+function filterGallery(btn) {
+  document.querySelectorAll('#catFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  applyFilters();
+}
+function filterYear(btn) {
+  document.querySelectorAll('#yearFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeYear = btn.dataset.year;
+  applyFilters();
+}
+function applyFilters() {
+  filtered = allPhotos.filter(p => {
+    const catOk  = activeCat  === 'all' || (p.category || 'Other') === activeCat;
+    const yearOk = activeYear === 'all' || (p.year || '') === activeYear;
+    return catOk && yearOk;
+  });
+  renderPhotos();
+}
+function renderPhotos() {
+  const grid = document.getElementById('galleryFullGrid');
+  const empty = document.getElementById('galleryEmpty');
+  const count = document.getElementById('photoCount');
+  grid.innerHTML = '';
+  if (!filtered.length) {
+    empty.style.display = 'block';
+    count.textContent = '';
+    return;
+  }
+  empty.style.display = 'none';
+  count.textContent = `${filtered.length} photo${filtered.length !== 1 ? 's' : ''}`;
+  filtered.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item animate-on-scroll';
+    item.onclick = () => openLightbox(i);
+    item.innerHTML = `
+      <img src="${h(p.imageUrl)}" alt="${h(p.caption) || 'SurSadhana'}" loading="lazy"/>
+      <div class="gallery-item-caption">${h(p.caption) || ''}</div>
+    `;
+    grid.appendChild(item);
+    observer.observe(item);
+  });
+}
+function openLightbox(i) {
+  lbIndex = i;
+  const p = filtered[i];
+  document.getElementById('lightboxImg').src = p.imageUrl;
+  document.getElementById('lightboxCaption').textContent = p.caption || '';
+  document.getElementById('lightbox').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + filtered.length) % filtered.length;
+  openLightbox(lbIndex);
+}
+function h(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lightbox').style.display !== 'flex') return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+});
+
+const observer = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+});
+document.getElementById('hamburger').addEventListener('click', () =>
+  document.getElementById('navLinks').classList.toggle('open'));
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+</script>
+<script type="module" src="js/gallery-cms.js"></script>
+</body>
+</html>
