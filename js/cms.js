@@ -201,32 +201,125 @@ async function loadTeacherBio() {
   } catch(e) { console.error('Teacher bio error', e); }
 }
 
-/* ── Testimonials ────────────────────────────────────────────────── */
+/* ── Testimonials carousel ───────────────────────────────────────── */
 async function loadTestimonials() {
   try {
-    const snap = await getDocs(query(collection(db, 'website_testimonials'), orderBy('order', 'asc'), limit(6)));
-    if (snap.empty) return; // keep static fallback cards
+    const snap = await getDocs(query(collection(db, 'website_testimonials'), limit(50)));
+    if (snap.empty) return; // keep static fallback
+
+    // Collect published testimonials and shuffle
+    let all = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(t => t.published !== false && t.name && t.quote);
+    if (!all.length) return;
+
+    // Fisher-Yates shuffle
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+
     const grid = document.getElementById('testimonialsGrid');
     if (!grid) return;
-    grid.innerHTML = '';
-    snap.forEach(docSnap => {
-      const d = docSnap.data();
-      if (d.published === false) return;
-      const initials = (d.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-      const avatar = d.photoUrl
-        ? `<img src="${h(d.photoUrl)}" alt="${h(d.name)}" class="testimonial-avatar"/>`
+
+    const PER_PAGE = 3;
+    const totalPages = Math.ceil(all.length / PER_PAGE);
+    let current = 0;
+    let timer   = null;
+
+    // Build carousel wrapper
+    const wrapper  = document.createElement('div');
+    wrapper.className = 'testimonial-carousel';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'testimonial-arrow testimonial-prev';
+    prevBtn.innerHTML = '&#8249;';
+    prevBtn.setAttribute('aria-label', 'Previous');
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'testimonial-arrow testimonial-next';
+    nextBtn.innerHTML = '&#8250;';
+    nextBtn.setAttribute('aria-label', 'Next');
+
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'testimonial-cards-wrap';
+
+    const cardsEl = document.createElement('div');
+    cardsEl.className = 'testimonials-grid';
+    cardsWrap.appendChild(cardsEl);
+
+    const dotsEl = document.createElement('div');
+    dotsEl.className = 'testimonial-dots';
+
+    if (totalPages > 1) {
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Page ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    wrapper.appendChild(prevBtn);
+    wrapper.appendChild(cardsWrap);
+    wrapper.appendChild(nextBtn);
+    wrapper.appendChild(dotsEl);
+
+    // Replace existing grid with carousel
+    grid.parentNode.replaceChild(wrapper, grid);
+
+    function buildCard(t) {
+      const initials = (t.name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      const avatar   = t.photoUrl
+        ? `<img src="${h(t.photoUrl)}" alt="${h(t.name)}" class="testimonial-avatar" loading="lazy"/>`
         : `<div class="testimonial-initials">${h(initials)}</div>`;
-      const card = document.createElement('div');
-      card.className = 'testimonial-card animate-on-scroll';
-      card.innerHTML = `
-        ${avatar}
-        <div class="testimonial-quote">${h(d.quote)}</div>
-        <div class="testimonial-name">${h(d.name)}</div>
-        <div class="testimonial-role">${h(d.role||'Student')}</div>
-      `;
-      grid.appendChild(card);
-      observer.observe(card);
-    });
+      return `
+        <div class="testimonial-card visible">
+          ${avatar}
+          <div class="testimonial-quote">${h(t.quote)}</div>
+          <div class="testimonial-name">${h(t.name)}</div>
+          <div class="testimonial-role">${h(t.role || 'Student')}</div>
+        </div>`;
+    }
+
+    function renderPage(idx) {
+      const slice = all.slice(idx * PER_PAGE, idx * PER_PAGE + PER_PAGE);
+      cardsEl.style.opacity = '0';
+      setTimeout(() => {
+        cardsEl.innerHTML = slice.map(buildCard).join('');
+        cardsEl.style.opacity = '1';
+        // Update dots
+        dotsEl.querySelectorAll('.testimonial-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+        // Hide arrows if only 1 page
+        prevBtn.style.visibility = totalPages > 1 ? 'visible' : 'hidden';
+        nextBtn.style.visibility = totalPages > 1 ? 'visible' : 'hidden';
+      }, 220);
+    }
+
+    function goTo(idx) {
+      current = (idx + totalPages) % totalPages;
+      renderPage(current);
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      if (totalPages > 1) timer = setInterval(() => goTo(current + 1), 7000);
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Pause on hover
+    wrapper.addEventListener('mouseenter', () => clearInterval(timer));
+    wrapper.addEventListener('mouseleave', resetTimer);
+
+    renderPage(0);
+    resetTimer();
+
   } catch(e) { console.error('Testimonials load error', e); }
 }
 
