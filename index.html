@@ -197,26 +197,8 @@
 
 <!-- ── STATS ──────────────────────────────────────────────────────── -->
 <section class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat-item">
-      <span class="stat-num" data-target="10">0</span><span class="stat-suffix">+</span>
-      <div class="stat-label">Years of Teaching</div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="200">0</span><span class="stat-suffix">+</span>
-      <div class="stat-label">Students Trained</div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="3">0</span><span class="stat-suffix"></span>
-      <div class="stat-label">Courses Offered</div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="8">0</span><span class="stat-suffix"></span>
-      <div class="stat-label">Exam Levels</div>
-    </div>
+  <div class="stats-inner" id="statsInner">
+    <!-- Loaded from Firestore website_settings/main -->
   </div>
 </section>
 
@@ -225,25 +207,11 @@
   <div class="container">
     <div class="section-label animate-on-scroll">Our Philosophy</div>
     <h2 class="section-title animate-on-scroll">About SurSadhana Music Classes</h2>
-    <p class="section-intro animate-on-scroll">
-      At SurSadhana Music Classes, we believe that music is not merely a skill — it is a lifelong journey of learning, discipline, and self-discovery. With structured training, personalized guidance, and a nurturing environment, we preserve the rich heritage of Indian classical music while helping every student discover their unique musical identity.
+    <p class="section-intro animate-on-scroll" id="aboutIntro">
+      <!-- Loaded from Firestore website_about/main -->
     </p>
-    <div class="pillars">
-      <div class="pillar animate-on-scroll">
-        <div class="pillar-icon">🪘</div>
-        <h3>Sadhana</h3>
-        <p>Consistent practice is the foundation of musical excellence. We encourage every student to cultivate dedication, patience, and disciplined Riyaz.</p>
-      </div>
-      <div class="pillar animate-on-scroll delay-1">
-        <div class="pillar-icon">🎵</div>
-        <h3>Sur</h3>
-        <p>A deep understanding of melody, purity of notes, and musical expression forms the heart of our training — developing both technical proficiency and aesthetic sensitivity.</p>
-      </div>
-      <div class="pillar animate-on-scroll delay-2">
-        <div class="pillar-icon">🙏</div>
-        <h3>Samarpan</h3>
-        <p>True learning blossoms through humility, commitment, and devotion to the art. We inspire students to approach music with sincerity, respect, and passion.</p>
-      </div>
+    <div class="pillars" id="aboutPillars">
+      <!-- Loaded from Firestore website_about/main -->
     </div>
   </div>
 </section>
@@ -256,43 +224,8 @@
     <p class="section-intro animate-on-scroll">
       Structured training in Indian Classical Music with a strong emphasis on building a solid musical foundation through disciplined learning and regular practice.
     </p>
-    <div class="courses-grid">
-      <div class="course-card animate-on-scroll">
-        <div class="course-icon">🎤</div>
-        <h3>Indian Classical Vocal</h3>
-        <div class="course-badge">Gandharva Syllabus</div>
-        <p>Our primary course follows the examination syllabus of <strong>Akhil Bharatiya Gandharva Mahavidyalaya Mandal, Vashi</strong> — guiding students from <strong>Prarambhik</strong> to the prestigious <strong>Sangeet Alankar</strong> level.</p>
-        <ul class="course-topics">
-          <li>Voice culture & swara development</li>
-          <li>Raga presentation & layakari</li>
-          <li>Theory & performance skills</li>
-          <li>Examination-oriented preparation</li>
-        </ul>
-      </div>
-      <div class="course-card animate-on-scroll delay-1">
-        <div class="course-icon">🎹</div>
-        <h3>Harmonium</h3>
-        <div class="course-badge">Solo & Accompaniment</div>
-        <p>Learn Harmonium alongside vocal music, covering accompaniment techniques, solo performance, notation reading, and examination preparation as per the Gandharva syllabus.</p>
-        <ul class="course-topics">
-          <li>Accompaniment techniques</li>
-          <li>Solo performance</li>
-          <li>Notation reading</li>
-          <li>Gandharva exam preparation</li>
-        </ul>
-      </div>
-      <div class="course-card animate-on-scroll delay-2">
-        <div class="course-icon">🎶</div>
-        <h3>Marathi & Hindi Light Vocal</h3>
-        <div class="course-badge">Bhavgeet · Natyasangeet</div>
-        <p>Dedicated batches in <strong>Marathi Bhavgeet, Bhaktigeet, Natyasangeet, Abhang</strong>, and <strong>Hindi Light Vocal</strong> — emphasizing expression, pronunciation, and stage presentation.</p>
-        <ul class="course-topics">
-          <li>Marathi Bhavgeet & Bhaktigeet</li>
-          <li>Natyasangeet & Abhang</li>
-          <li>Hindi Light Vocal</li>
-          <li>Stage presentation skills</li>
-        </ul>
-      </div>
+    <div class="courses-grid" id="coursesGrid">
+      <!-- Loaded from Firestore website_courses -->
     </div>
     <div class="courses-note animate-on-scroll">
       Whether your goal is academic pursuit, stage performance, or lifelong passion — our courses are designed to nurture students at every level.
@@ -427,37 +360,7 @@
       Hear from the students and parents who have been part of the SurSadhana family.
     </p>
     <div class="testimonials-grid" id="testimonialsGrid">
-      <!-- Static fallback cards — replaced by CMS data when available -->
-      <div class="testimonial-card animate-on-scroll">
-        <div class="testimonial-initials">SA</div>
-        <div class="testimonial-quote">
-          "My daughter has been learning classical vocal here for two years. The progress has been remarkable —
-          not just in singing but in her confidence, discipline and love for music. Mansi ma'am's teaching is
-          structured, patient and truly inspiring."
-        </div>
-        <div class="testimonial-name">Savita Agarwal</div>
-        <div class="testimonial-role">Parent · Student since 2023</div>
-      </div>
-      <div class="testimonial-card animate-on-scroll delay-1">
-        <div class="testimonial-initials">RK</div>
-        <div class="testimonial-quote">
-          "I joined as a complete beginner at age 35, thinking it was too late to learn classical music.
-          Mansi ma'am made me feel at ease immediately. Within a year I cleared my Prarambhik exam with
-          distinction. Highly recommend to anyone — young or old!"
-        </div>
-        <div class="testimonial-name">Rohit Kulkarni</div>
-        <div class="testimonial-role">Student · Adult Learner</div>
-      </div>
-      <div class="testimonial-card animate-on-scroll delay-2">
-        <div class="testimonial-initials">PM</div>
-        <div class="testimonial-quote">
-          "The annual concerts and performances that SurSadhana organizes give students real stage experience.
-          My son performed at the annual concert last year and it was a transformative experience. The
-          Guru-Shishya bond here is something very special."
-        </div>
-        <div class="testimonial-name">Priya Marathe</div>
-        <div class="testimonial-role">Parent · Student since 2022</div>
-      </div>
+      <!-- Loaded from Firestore website_testimonials -->
     </div>
   </div>
 </section>
@@ -467,78 +370,8 @@
   <div class="container">
     <div class="section-label animate-on-scroll">Questions?</div>
     <h2 class="section-title animate-on-scroll">Frequently Asked Questions</h2>
-    <div class="faq-list animate-on-scroll">
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What courses do you offer?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          We offer training in <strong>Indian Classical Vocal</strong>, <strong>Harmonium</strong>, and <strong>Marathi & Hindi Light Vocal</strong> for children, students, and adults of all age groups.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Which examination syllabus do you follow?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          We follow the syllabus of <strong>Akhil Bharatiya Gandharva Mahavidyalaya Mandal, Vashi</strong>, preparing students from <strong>Prarambhik</strong> to <strong>Sangeet Alankar</strong> examinations.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What is the minimum age to join?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          Students <strong>6 years and above</strong> are welcome to enroll. We welcome complete beginners as well as students with prior musical training.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          How many classes are conducted each week?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          Regular classes are conducted <strong>twice a week</strong>, along with a dedicated <strong>Riyaz (practice) session every weekend</strong> to strengthen learning and performance skills.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What are the course fees?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          Fees start from <strong>₹2,000 per month</strong>. The exact fee depends on the course and batch selected. Please contact us for detailed fee information.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Do you offer online classes?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          Yes. Both <strong>online and offline</strong> learning options are available, subject to batch availability.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Do students get performance opportunities?
-          <span class="faq-arrow">›</span>
-        </button>
-        <div class="faq-a">
-          Yes! Students regularly participate in <strong>annual concerts, cultural events, competitions, examinations, workshops</strong>, and other stage performances throughout the year.
-        </div>
-      </div>
-
+    <div class="faq-list animate-on-scroll" id="faqList">
+      <!-- Loaded from Firestore website_faq -->
     </div>
   </div>
 </section>
@@ -556,31 +389,31 @@
             <span class="contact-icon">📞</span>
             <div>
               <div class="contact-label">Phone / WhatsApp</div>
-              <a href="tel:+918308047545" class="contact-value">+91 83080 47545</a>
+              <a href="tel:+918308047545" class="contact-value" id="contactPhoneLink"><span id="contactPhone">+91 83080 47545</span></a>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📧</span>
             <div>
               <div class="contact-label">Email</div>
-              <a href="mailto:kulkarnimansi001@gmail.com" class="contact-value">kulkarnimansi001@gmail.com</a>
+              <a href="mailto:kulkarnimansi001@gmail.com" class="contact-value" id="contactEmailLink"><span id="contactEmail">kulkarnimansi001@gmail.com</span></a>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📍</span>
             <div>
               <div class="contact-label">Location</div>
-              <div class="contact-value">D-703, Padmavati Hills,<br>Bavdhan, Pune 411021</div>
+              <div class="contact-value" id="contactAddress">D-703, Padmavati Hills,<br>Bavdhan, Pune 411021</div>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">🕐</span>
             <div>
               <div class="contact-label">Classes</div>
-              <div class="contact-value">Twice a week + Weekend Riyaz<br>Contact for batch timings</div>
+              <div class="contact-value"><span id="contactSchedule">Twice a week + Weekend Riyaz</span><br><span id="contactScheduleNote">Contact for batch timings</span></div>
             </div>
           </div>
-          <a href="https://wa.me/918308047545?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20SurSadhana%20Academy." class="btn btn-gold whatsapp-btn" target="_blank">
+          <a href="https://wa.me/918308047545?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20SurSadhana%20Academy." class="btn btn-gold whatsapp-btn" target="_blank" id="whatsappBtn">
             💬 Chat on WhatsApp
           </a>
         </div>

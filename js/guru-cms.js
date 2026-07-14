@@ -11,29 +11,56 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 function h(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function md(s) { return h(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'); }
 function safeUrl(u) { const s=String(u||'').trim(); return(s.startsWith('http')||s.startsWith('/')) ? s : ''; }
 function fmtDate(d) { if(!d) return ''; return new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}); }
 
+const obs = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+
+/* ── Teacher bio, badge, subtitle, guru stats, highlights ─────────── */
 async function loadGuruBio() {
   try {
     const snap = await getDoc(doc(db, 'website_teacher', 'main'));
     if (!snap.exists()) return;
     const d = snap.data();
-    if (d.name)  { document.getElementById('guruName').textContent = d.name; }
-    if (d.badge) { document.getElementById('guruBadge').textContent = d.badge; }
-    const b = (id, txt) => { const el = document.getElementById(id); if(el && txt) el.innerHTML = h(txt).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'); };
-    b('guroBio1', d.bio1); b('guroBio2', d.bio2); b('guroBio3', d.bio3);
+
+    if (d.name)     setEl('guruName', d.name, 'text');
+    if (d.badge)    setEl('guruBadge', d.badge, 'text');
+    if (d.subtitle) setEl('guruSubtitle', d.subtitle, 'text');
+
+    // Guru page uses guru_bio1/2/3 (separate from index page bio1/2/3)
+    if (d.guru_bio1) setEl('guroBio1', md(d.guru_bio1));
+    if (d.guru_bio2) setEl('guroBio2', md(d.guru_bio2));
+    if (d.guru_bio3) setEl('guroBio3', md(d.guru_bio3));
+
+    // Quick stats bar
+    if (d.guru_stats && d.guru_stats.length) {
+      const bar = document.getElementById('guruStatsBar');
+      if (bar) {
+        bar.innerHTML = d.guru_stats.map(s => `
+          <div class="guru-stat">
+            <div class="guru-stat-num">${h(String(s.num))}</div>
+            <div class="guru-stat-label">${h(s.label)}</div>
+          </div>`).join('');
+      }
+    }
+
+    // Highlights grid
     if (d.highlights && d.highlights.length) {
-      document.getElementById('guruHighlights').innerHTML = d.highlights.map(item =>
-        `<div style="display:flex;gap:12px;align-items:center;background:var(--cream);border-radius:10px;padding:14px 16px;border:1px solid var(--border)">
-          <span style="font-size:1.3rem">${h(item.icon||'')}</span>
-          <span style="font-size:.88rem;font-weight:600;color:var(--maroon-dark)">${h(item.text||'')}</span>
-        </div>`
-      ).join('');
+      const hlEl = document.getElementById('guruHighlights');
+      if (hlEl) {
+        hlEl.innerHTML = d.highlights.map(item => `
+          <div style="display:flex;gap:12px;align-items:center;background:var(--cream);border-radius:10px;padding:14px 16px;border:1px solid var(--border)">
+            <span style="font-size:1.3rem">${h(item.icon||'')}</span>
+            <span style="font-size:.88rem;font-weight:600;color:var(--maroon-dark)">${h(item.text||'')}</span>
+          </div>`).join('');
+      }
     }
   } catch(e) { console.error('Guru bio error', e); }
 }
 
+/* ── Photos ──────────────────────────────────────────────────────── */
 async function loadGuruPhotos() {
   try {
     const snap = await getDocs(query(collection(db,'website_teacher_photos'), orderBy('order','asc')));
@@ -60,29 +87,139 @@ async function loadGuruPhotos() {
   } catch(e) { console.error('Guru photos error', e); }
 }
 
+/* ── Timeline, Lineage, Philosophy (from website_guru/main) ─────── */
+async function loadGuruContent() {
+  try {
+    const snap = await getDoc(doc(db, 'website_guru', 'main'));
+    if (!snap.exists()) return;
+    const d = snap.data();
+
+    // Timeline
+    if (d.timeline && d.timeline.length) {
+      const tl = document.getElementById('guruTimeline');
+      if (tl) {
+        tl.innerHTML = '';
+        d.timeline.forEach((item, i) => {
+          const isLeft = i % 2 === 0;
+          tl.insertAdjacentHTML('beforeend', `
+            <div class="timeline-item animate-on-scroll">
+              ${isLeft ? `<div class="timeline-content">` : `<div class="timeline-spacer"></div><div class="timeline-dot"></div><div class="timeline-content">`}
+                <div class="timeline-year">${h(item.year)}</div>
+                <div class="timeline-title">${h(item.title)}</div>
+                <div class="timeline-text">${md(item.text)}</div>
+              </div>
+              ${isLeft ? `<div class="timeline-dot"></div><div class="timeline-spacer"></div>` : ''}
+            </div>`);
+        });
+        tl.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
+      }
+    }
+
+    // Lineage tree
+    if (d.lineage && d.lineage.length) {
+      const lineageEl = document.getElementById('guruLineage');
+      if (lineageEl) {
+        lineageEl.innerHTML = d.lineage.map((node, i) => `
+          ${i > 0 ? '<div class="lineage-connector"></div>' : ''}
+          <div class="lineage-node${node.root ? ' root' : ''}">
+            <div class="lineage-name">${h(node.name)}</div>
+            <div class="lineage-desc">${h(node.desc)}</div>
+          </div>`).join('');
+      }
+      if (d.lineage_note) {
+        const noteEl = document.getElementById('guruLineageNote');
+        if (noteEl) noteEl.innerHTML = md(d.lineage_note);
+      }
+    }
+
+    // Teaching philosophy
+    if (d.philosophy && d.philosophy.length) {
+      const philEl = document.getElementById('guruPhilosophy');
+      if (philEl) {
+        philEl.innerHTML = d.philosophy.map((p, i) => `
+          <div class="philosophy-card animate-on-scroll${i % 3 > 0 ? ' delay-' + (i % 3) : ''}">
+            <div class="philosophy-icon">${h(p.icon||'')}</div>
+            <div class="philosophy-title">${h(p.title)}</div>
+            <div class="philosophy-text">${md(p.text)}</div>
+          </div>`).join('');
+        philEl.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
+      }
+    }
+  } catch(e) { console.error('Guru content error', e); }
+}
+
+/* ── Awards ──────────────────────────────────────────────────────── */
+async function loadGuruAwards() {
+  try {
+    const snap = await getDocs(query(collection(db,'website_guru_awards'), orderBy('order','asc')));
+    if (snap.empty) return;
+    const grid = document.getElementById('guruAwardsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const delays = ['','delay-1','delay-2'];
+    let i = 0;
+    snap.forEach(docSnap => {
+      const a = docSnap.data();
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="award-card animate-on-scroll${delays[i%3] ? ' '+delays[i%3] : ''}">
+          <div class="award-icon">${h(a.icon||'🏆')}</div>
+          <div class="award-title">${h(a.title)}</div>
+          <div class="award-desc">${md(a.desc)}</div>
+        </div>`);
+      obs.observe(grid.lastElementChild);
+      i++;
+    });
+  } catch(e) { console.error('Guru awards error', e); }
+}
+
+/* ── Concerts & Platforms ────────────────────────────────────────── */
+async function loadGuruConcerts() {
+  try {
+    const snap = await getDocs(query(collection(db,'website_guru_concerts'), orderBy('order','asc')));
+    if (snap.empty) return;
+    const grid = document.getElementById('guruConcertsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    let i = 0;
+    const delays = ['','delay-1','delay-2'];
+    snap.forEach(docSnap => {
+      const c = docSnap.data();
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="philosophy-card animate-on-scroll${delays[i%3] ? ' '+delays[i%3] : ''}">
+          <div class="philosophy-icon">${h(c.icon||'🎵')}</div>
+          <div class="philosophy-title">${h(c.title)}</div>
+          <div class="philosophy-text">${md(c.desc)}</div>
+        </div>`);
+      obs.observe(grid.lastElementChild);
+      i++;
+    });
+  } catch(e) { console.error('Guru concerts error', e); }
+}
+
+/* ── Performance Videos (from website_guru_videos) ──────────────── */
 async function loadGuruVideos() {
   try {
-    const snap = await getDocs(query(collection(db,'website_videos'), orderBy('date','desc'), limit(6)));
+    const snap = await getDocs(query(collection(db,'website_guru_videos'), orderBy('order','asc')));
     if (snap.empty) return;
     const grid = document.getElementById('guruVideosGrid');
-    const ph   = document.getElementById('guruVideosPlaceholder');
-    if (ph) ph.remove();
-    let count = 0;
+    if (!grid) return;
+    grid.innerHTML = '';
     snap.forEach(docSnap => {
       const d = docSnap.data();
-      if (d.published === false || !d.youtubeId || count >= 6) return; count++;
-      const ytId = (d.youtubeId||'').replace(/[^a-zA-Z0-9_-]/g,'');
+      const embedUrl = safeUrl(d.embedUrl || '');
+      if (!embedUrl) return;
       const card = document.createElement('div');
       card.className = 'video-card animate-on-scroll';
       card.innerHTML = `
         <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/${ytId}" title="${h(d.title)||'Performance'}"
+          <iframe src="${h(embedUrl)}" title="${h(d.title)||'Performance'}"
             frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
             allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="video-info">
           <span class="video-tag">${h(d.tag)||'Performance'}</span>
-          <p>${h(d.title)}</p>
+          <strong style="display:block;margin-bottom:4px;color:var(--text)">${h(d.title)}</strong>
+          <p>${h(d.desc||'')}</p>
         </div>`;
       grid.appendChild(card);
       obs.observe(card);
@@ -90,6 +227,7 @@ async function loadGuruVideos() {
   } catch(e) { console.error('Guru videos error', e); }
 }
 
+/* ── Programs & Updates ──────────────────────────────────────────── */
 async function loadGuruArticles() {
   try {
     const snap = await getDocs(query(collection(db,'website_guru_articles'), orderBy('date','desc'), limit(6)));
@@ -118,10 +256,18 @@ async function loadGuruArticles() {
   } catch(e) { console.error('Guru articles error', e); }
 }
 
-const obs = new IntersectionObserver(entries =>
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+/* ── helpers ─────────────────────────────────────────────────────── */
+function setEl(id, val, mode) {
+  const el = document.getElementById(id);
+  if (!el || !val) return;
+  if (mode === 'text') el.textContent = val;
+  else el.innerHTML = val;
+}
 
 loadGuruBio();
 loadGuruPhotos();
+loadGuruContent();
+loadGuruAwards();
+loadGuruConcerts();
 loadGuruVideos();
 loadGuruArticles();
