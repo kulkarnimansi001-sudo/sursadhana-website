@@ -256,6 +256,40 @@ async function loadGuruArticles() {
   } catch(e) { console.error('Guru articles error', e); }
 }
 
+/* ── Section headings (from website_settings/main.headings.guru) ─── */
+async function loadGuruHeadings() {
+  try {
+    const snap = await getDoc(doc(db, 'website_settings', 'main'));
+    if (!snap.exists()) return;
+    const hg = ((snap.data().headings || {}).guru) || {};
+    const h$ = (id, val) => { if (!val) return; const el = document.getElementById(id); if (el) el.textContent = val; };
+    h$('guru-bio-label',       hg.bio_label);
+    h$('guru-bio-title',       hg.bio_title);
+    h$('guru-journey-label',   hg.journey_label);
+    h$('guru-journey-title',   hg.journey_title);
+    h$('guru-journey-intro',   hg.journey_intro);
+    h$('guru-lineage-label',   hg.lineage_label);
+    h$('guru-lineage-title',   hg.lineage_title);
+    h$('guru-lineage-intro',   hg.lineage_intro);
+    h$('guru-phil-label',      hg.phil_label);
+    h$('guru-phil-title',      hg.phil_title);
+    h$('guru-phil-intro',      hg.phil_intro);
+    h$('guru-awards-label',    hg.awards_label);
+    h$('guru-awards-title',    hg.awards_title);
+    h$('guru-concerts-label',  hg.concerts_label);
+    h$('guru-concerts-title',  hg.concerts_title);
+    h$('guru-concerts-intro',  hg.concerts_intro);
+    h$('guru-gallery-label',   hg.gallery_label);
+    h$('guru-gallery-title',   hg.gallery_title);
+    h$('guru-perf-label',      hg.perf_label);
+    h$('guru-perf-title',      hg.perf_title);
+    h$('guru-perf-intro',      hg.perf_intro);
+    h$('guru-programs-label',  hg.programs_label);
+    h$('guru-programs-title',  hg.programs_title);
+    h$('guru-programs-intro',  hg.programs_intro);
+  } catch(e) { console.error('Guru headings error', e); }
+}
+
 /* ── helpers ─────────────────────────────────────────────────────── */
 function setEl(id, val, mode) {
   const el = document.getElementById(id);
@@ -271,3 +305,4 @@ loadGuruAwards();
 loadGuruConcerts();
 loadGuruVideos();
 loadGuruArticles();
+loadGuruHeadings();

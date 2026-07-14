@@ -105,6 +105,34 @@ async function loadSettings() {
       const wa = document.getElementById('whatsappBtn');
       if (wa) wa.href = `https://wa.me/${d.phone_raw || '918308047545'}?text=${d.whatsapp_msg}`;
     }
+
+    // Section headings
+    const h$ = (id, val) => { if (!val) return; const el = document.getElementById(id); if (el) el.textContent = val; };
+    const hi = (d.headings || {}).index || {};
+    h$('idx-about-label',        hi.about_label);
+    h$('idx-about-title',        hi.about_title);
+    h$('idx-courses-label',      hi.courses_label);
+    h$('idx-courses-title',      hi.courses_title);
+    h$('idx-courses-intro',      hi.courses_intro);
+    h$('idx-courses-note',       hi.courses_note);
+    h$('idx-gallery-label',      hi.gallery_label);
+    h$('idx-gallery-title',      hi.gallery_title);
+    h$('idx-perf-label',         hi.perf_label);
+    h$('idx-perf-title',         hi.perf_title);
+    h$('idx-perf-intro',         hi.perf_intro);
+    h$('idx-teacher-label',      hi.teacher_label);
+    h$('idx-news-label',         hi.news_label);
+    h$('idx-news-title',         hi.news_title);
+    h$('idx-achieve-label',      hi.achieve_label);
+    h$('idx-achieve-title',      hi.achieve_title);
+    h$('idx-testimonials-label', hi.testimonials_label);
+    h$('idx-testimonials-title', hi.testimonials_title);
+    h$('idx-testimonials-intro', hi.testimonials_intro);
+    h$('idx-faq-label',          hi.faq_label);
+    h$('idx-faq-title',          hi.faq_title);
+    h$('idx-contact-label',      hi.contact_label);
+    h$('idx-contact-title',      hi.contact_title);
+    h$('idx-contact-intro',      hi.contact_intro);
   } catch(e) { console.error('Settings load error', e); }
 }
 
