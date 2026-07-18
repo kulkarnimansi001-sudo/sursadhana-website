@@ -45,15 +45,22 @@
     </a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#courses">Courses</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="guru.html">Guru</a></li>
-      <li><a href="blog.html" class="active">Learn</a></li>
-      <li><a href="index.html#news">News</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
-      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank">Student Login</a></li>
+      <li><a href="index.html#about"    data-i18n="nav.about">About</a></li>
+      <li><a href="index.html#courses"  data-i18n="nav.courses">Courses</a></li>
+      <li><a href="gallery.html"        data-i18n="nav.gallery">Gallery</a></li>
+      <li><a href="guru.html"           data-i18n="nav.guru">Guru</a></li>
+      <li><a href="blog.html" class="active" data-i18n="nav.learn">Learn</a></li>
+      <li><a href="index.html#news"     data-i18n="nav.news">News</a></li>
+      <li><a href="faq.html"            data-i18n="nav.faq">FAQ</a></li>
+      <li><a href="index.html#contact"  data-i18n="nav.contact">Contact</a></li>
+      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank" data-i18n="nav.login">Student Login</a></li>
+      <li class="lang-switch">
+        <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="mr" onclick="switchLang('mr')">मर</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="hi" onclick="switchLang('hi')">हि</button>
+      </li>
     </ul>
   </div>
 </nav>
@@ -166,18 +173,22 @@
       </div>
     </div>
     <div class="footer-links">
-      <a href="index.html#about">About</a>
-      <a href="index.html#courses">Courses</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="guru.html">Guru</a>
-      <a href="blog.html">Blog</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="index.html#about"    data-i18n="footer.about">About</a>
+      <a href="index.html#courses"  data-i18n="footer.courses">Courses</a>
+      <a href="gallery.html"        data-i18n="footer.gallery">Gallery</a>
+      <a href="guru.html"           data-i18n="footer.guru">Guru</a>
+      <a href="blog.html"           data-i18n="footer.blog">Blog</a>
+      <a href="index.html#contact"  data-i18n="footer.contact">Contact</a>
     </div>
     <div class="footer-portal">
-      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank">🎓 Student Portal</a>
+      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank" data-i18n="footer.portal">🎓 Student Portal</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 SurSadhana Music Classes, Pune. All rights reserved. &nbsp;·&nbsp; <a href="privacy-policy.html" style="color:inherit;opacity:.7;text-decoration:underline">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;opacity:.7;text-decoration:underline">Terms &amp; Conditions</a></div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 SurSadhana Music Classes, Pune. All rights reserved.</span>
+    &nbsp;·&nbsp; <a href="privacy-policy.html" style="color:inherit;opacity:.7;text-decoration:underline" data-i18n="footer.privacy">Privacy Policy</a>
+    &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;opacity:.7;text-decoration:underline" data-i18n="footer.terms">Terms &amp; Conditions</a>
+  </div>
 </footer>
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
@@ -255,6 +266,7 @@ window.addEventListener('scroll', () => {
 document.getElementById('hamburger').addEventListener('click', () =>
   document.getElementById('navLinks').classList.toggle('open'));
 </script>
+<script src="js/i18n.js"></script>
 <script type="module" src="js/blog-cms.js"></script>
 </body>
 </html>

@@ -156,15 +156,22 @@
     </a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">☰</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#courses">Courses</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="guru.html">Guru</a></li>
-      <li><a href="blog.html">Learn</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank">Student Login</a></li>
+      <li><a href="#about"       data-i18n="nav.about">About</a></li>
+      <li><a href="#courses"     data-i18n="nav.courses">Courses</a></li>
+      <li><a href="gallery.html" data-i18n="nav.gallery">Gallery</a></li>
+      <li><a href="guru.html"    data-i18n="nav.guru">Guru</a></li>
+      <li><a href="blog.html"    data-i18n="nav.learn">Learn</a></li>
+      <li><a href="#news"        data-i18n="nav.news">News</a></li>
+      <li><a href="faq.html"     data-i18n="nav.faq">FAQ</a></li>
+      <li><a href="#contact"     data-i18n="nav.contact">Contact</a></li>
+      <li><a href="https://app.sursadhana.co.in" class="btn-portal" target="_blank" data-i18n="nav.login">Student Login</a></li>
+      <li class="lang-switch">
+        <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="mr" onclick="switchLang('mr')">मर</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="hi" onclick="switchLang('hi')">हि</button>
+      </li>
     </ul>
   </div>
 </nav>
@@ -175,23 +182,23 @@
   <div class="hero-content">
     <img src="images/logo.png" alt="SurSadhana Music Classes" class="hero-logo animate-fade-up"/>
     <div class="hero-school-name animate-fade-up">SurSadhana Music Classes</div>
-    <div class="hero-tagline animate-fade-up delay-1">Sadhana &nbsp;·&nbsp; Sur &nbsp;·&nbsp; Samarpan</div>
-    <h1 class="hero-title animate-fade-up delay-2">
+    <div class="hero-tagline animate-fade-up delay-1" data-i18n="hero.tagline">Sadhana &nbsp;·&nbsp; Sur &nbsp;·&nbsp; Samarpan</div>
+    <h1 class="hero-title animate-fade-up delay-2" data-i18n="hero.title">
       Where Music Becomes<br><span class="gold">A Lifelong Journey</span>
     </h1>
-    <p class="hero-sub animate-fade-up delay-3">
+    <p class="hero-sub animate-fade-up delay-3" data-i18n="hero.sub">
       Indian Classical Music training in Pune — Vocal · Harmonium · Light Music<br>
       Gandharva Mahavidyalaya syllabus · Prarambhik to Sangeet Alankar
     </p>
     <div class="hero-btns animate-fade-up delay-4">
-      <a href="#courses" class="btn btn-gold">Explore Courses</a>
-      <a href="#contact" class="btn btn-outline-light">Join Now</a>
-      <a href="https://app.sursadhana.co.in" class="btn btn-white" target="_blank">🎓 Student Login</a>
+      <a href="#courses" class="btn btn-gold" data-i18n="hero.btnCourses">Explore Courses</a>
+      <a href="#contact" class="btn btn-outline-light" data-i18n="hero.btnJoin">Join Now</a>
+      <a href="https://app.sursadhana.co.in" class="btn btn-white" target="_blank" data-i18n="hero.btnLogin">🎓 Student Login</a>
     </div>
   </div>
   <div class="hero-scroll-hint">
     <span></span>
-    <p>Scroll to explore</p>
+    <p data-i18n="hero.scrollHint">Scroll to explore</p>
   </div>
 </section>
 
@@ -200,26 +207,26 @@
   <div class="features-inner">
     <div class="feature-card">
       <div class="feature-icon">🎓</div>
-      <div class="feature-title">Akhil Bhartiya Gandharva Mandal Certified Curriculum</div>
-      <div class="feature-sub">Prarambhik to Sangeet Alankar</div>
+      <div class="feature-title" data-i18n="feat.cert.title">Akhil Bhartiya Gandharva Mandal Certified Curriculum</div>
+      <div class="feature-sub"   data-i18n="feat.cert.sub">Prarambhik to Sangeet Alankar</div>
     </div>
     <div class="feature-divider"></div>
     <div class="feature-card">
       <div class="feature-icon">🎵</div>
-      <div class="feature-title">Indian Classical Foundation</div>
-      <div class="feature-sub">Vocal &bull; Harmonium &bull; Light Music</div>
+      <div class="feature-title" data-i18n="feat.classical.title">Indian Classical Foundation</div>
+      <div class="feature-sub"   data-i18n="feat.classical.sub">Vocal &bull; Harmonium &bull; Light Music</div>
     </div>
     <div class="feature-divider"></div>
     <div class="feature-card">
       <div class="feature-icon">👩‍🏫</div>
-      <div class="feature-title">Personalized Guidance</div>
-      <div class="feature-sub">Small Batches &amp; Individual Attention</div>
+      <div class="feature-title" data-i18n="feat.guidance.title">Personalized Guidance</div>
+      <div class="feature-sub"   data-i18n="feat.guidance.sub">Small Batches &amp; Individual Attention</div>
     </div>
     <div class="feature-divider"></div>
     <div class="feature-card">
       <div class="feature-icon">🎤</div>
-      <div class="feature-title">Performance Opportunities</div>
-      <div class="feature-sub">Stage Shows &bull; Recordings &bull; Competitions</div>
+      <div class="feature-title" data-i18n="feat.perf.title">Performance Opportunities</div>
+      <div class="feature-sub"   data-i18n="feat.perf.sub">Stage Shows &bull; Recordings &bull; Competitions</div>
     </div>
   </div>
 </section>
@@ -264,10 +271,10 @@
       <!-- Loaded dynamically from Firestore via cms.js -->
     </div>
     <div class="gallery-more animate-on-scroll" id="galleryMore" style="display:none">
-      <button class="btn btn-outline" onclick="loadMoreGallery()">Load More Photos</button>
+      <button class="btn btn-outline" onclick="loadMoreGallery()" data-i18n="gallery.loadMore">Load More Photos</button>
     </div>
     <div style="text-align:center;margin-top:36px" class="animate-on-scroll">
-      <a href="gallery.html" class="btn btn-outline">📷 View Full Gallery</a>
+      <a href="gallery.html" class="btn btn-outline" data-i18n="gallery.viewFull">📷 View Full Gallery</a>
     </div>
   </div>
 </section>
@@ -312,7 +319,7 @@
         <p id="teacherBio2">She holds an <strong>M.A. Music (Gold Medal, First Rank)</strong> from SNDT Women's University, is <strong>NET qualified</strong>, holds <strong>Sangeet Alankar</strong> from Gandharva Mahavidyalaya, and is the recipient of the <strong>NCPA Scholarship (2021–22)</strong>, <strong>Pt. Bhimsen Joshi Award</strong>, and <strong>Pt. Gajananbua Joshi Award</strong>.</p>
         <p id="teacherBio3">She has performed at prestigious platforms including <strong>Pt. Bhimsen Joshi Mahotsav</strong>, <strong>Ellora–Ajanta Festival</strong>, and <strong>Krishnabai Sangeet Festival</strong>, and has appeared on <strong>DD Sahyadri</strong> (Swar Pravah · Music Mehfil) across cities from Pune to Varanasi, Lucknow, Indore, and Bhubaneswar.</p>
         <div style="margin-bottom:20px">
-          <a href="guru.html" class="btn btn-gold">Read Full Biography →</a>
+          <a href="guru.html" class="btn btn-gold" data-i18n="teacher.readBio">Read Full Biography →</a>
         </div>
         <div class="teacher-highlights" id="teacherHighlights">
           <div class="highlight-item">
@@ -353,7 +360,7 @@
     <div class="news-grid" id="newsGrid">
       <div class="news-empty" id="newsEmpty">
         <span>📢</span>
-        <p>Updates and announcements will appear here.</p>
+        <p data-i18n="news.empty">Updates and announcements will appear here.</p>
       </div>
     </div>
   </div>
@@ -367,7 +374,7 @@
     <div class="achievements-grid" id="achievementsGrid">
       <div class="news-empty" id="achievementsEmpty">
         <span>🏆</span>
-        <p>Student achievements will be showcased here.</p>
+        <p data-i18n="achieve.empty">Student achievements will be showcased here.</p>
       </div>
     </div>
   </div>
@@ -410,32 +417,32 @@
           <div class="contact-item">
             <span class="contact-icon">📞</span>
             <div>
-              <div class="contact-label">Phone / WhatsApp</div>
+              <div class="contact-label" data-i18n="contact.phone">Phone / WhatsApp</div>
               <a href="tel:+918308047545" class="contact-value" id="contactPhoneLink"><span id="contactPhone">+91 83080 47545</span></a>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📧</span>
             <div>
-              <div class="contact-label">Email</div>
+              <div class="contact-label" data-i18n="contact.email">Email</div>
               <a href="mailto:kulkarnimansi001@gmail.com" class="contact-value" id="contactEmailLink"><span id="contactEmail">kulkarnimansi001@gmail.com</span></a>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📍</span>
             <div>
-              <div class="contact-label">Location</div>
+              <div class="contact-label" data-i18n="contact.location">Location</div>
               <div class="contact-value" id="contactAddress">D-703, Padmavati Hills,<br>Bavdhan, Pune 411021</div>
             </div>
           </div>
           <div class="contact-item">
             <span class="contact-icon">🕐</span>
             <div>
-              <div class="contact-label">Classes</div>
-              <div class="contact-value"><span id="contactSchedule">Twice a week + Weekend Riyaz</span><br><span id="contactScheduleNote">Contact for batch timings</span></div>
+              <div class="contact-label" data-i18n="contact.classes">Classes</div>
+              <div class="contact-value"><span id="contactSchedule" data-i18n="contact.schedule">Twice a week + Weekend Riyaz</span><br><span id="contactScheduleNote" data-i18n="contact.scheduleNote">Contact for batch timings</span></div>
             </div>
           </div>
-          <a href="https://wa.me/918308047545?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20SurSadhana%20Academy." class="btn btn-gold whatsapp-btn" target="_blank" id="whatsappBtn">
+          <a href="https://wa.me/918308047545?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20SurSadhana%20Academy." class="btn btn-gold whatsapp-btn" target="_blank" id="whatsappBtn" data-i18n="contact.whatsapp">
             💬 Chat on WhatsApp
           </a>
         </div>
@@ -462,27 +469,28 @@
       </div>
     </div>
     <div class="footer-links">
-      <a href="#about">About</a>
-      <a href="#courses">Courses</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="guru.html">Guru</a>
-      <a href="blog.html">Blog</a>
-      <a href="#contact">Contact</a>
+      <a href="#about"       data-i18n="footer.about">About</a>
+      <a href="#courses"     data-i18n="footer.courses">Courses</a>
+      <a href="gallery.html" data-i18n="footer.gallery">Gallery</a>
+      <a href="guru.html"    data-i18n="footer.guru">Guru</a>
+      <a href="blog.html"    data-i18n="footer.blog">Blog</a>
+      <a href="#contact"     data-i18n="footer.contact">Contact</a>
     </div>
     <div class="footer-portal">
-      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank">🎓 Student Portal</a>
+      <a href="https://app.sursadhana.co.in" class="btn btn-ghost" target="_blank" data-i18n="footer.portal">🎓 Student Portal</a>
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 SurSadhana Music Classes, Pune. All rights reserved.
-    &nbsp;·&nbsp; <a href="privacy-policy.html" style="color:inherit;opacity:.7;text-decoration:underline">Privacy Policy</a>
-    &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;opacity:.7;text-decoration:underline">Terms &amp; Conditions</a>
+    <span data-i18n="footer.copyright">© 2026 SurSadhana Music Classes, Pune. All rights reserved.</span>
+    &nbsp;·&nbsp; <a href="privacy-policy.html" style="color:inherit;opacity:.7;text-decoration:underline" data-i18n="footer.privacy">Privacy Policy</a>
+    &nbsp;·&nbsp; <a href="terms.html" style="color:inherit;opacity:.7;text-decoration:underline" data-i18n="footer.terms">Terms &amp; Conditions</a>
   </div>
 </footer>
 
 <!-- Back to top -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 <script type="module" src="js/cms.js"></script>
 </body>
