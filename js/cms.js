@@ -224,7 +224,9 @@ async function loadNews() {
       if (d.published === false || count >= 6) return; count++;
       const card = document.createElement('div');
       card.className = 'news-card animate-on-scroll';
+      const imgUrl = safeUrl(d.imageUrl);
       card.innerHTML = `
+        ${imgUrl ? `<div class="news-card-img"><img src="${h(imgUrl)}" alt="${h(d.title)}" loading="lazy"/></div>` : ''}
         <div class="news-date">${fmtDate(d.date)}</div>
         <div class="news-title">${h(d.title)}</div>
         <div class="news-body">${h(d.body)}</div>
@@ -249,8 +251,11 @@ async function loadAchievements() {
       if (d.published === false || count >= 8) return; count++;
       const card = document.createElement('div');
       card.className = 'achievement-card animate-on-scroll';
+      const achImg = safeUrl(d.imageUrl);
       card.innerHTML = `
-        <div class="achievement-icon">${h(d.icon) || '🏆'}</div>
+        ${achImg
+          ? `<div class="achievement-img"><img src="${h(achImg)}" alt="${h(d.name)}" loading="lazy"/></div>`
+          : `<div class="achievement-icon">${h(d.icon) || '🏆'}</div>`}
         <div class="achievement-name">${h(d.name)}</div>
         <div class="achievement-text">${h(d.text)}</div>
         <div class="achievement-date">${fmtDate(d.date)}</div>

@@ -467,11 +467,14 @@ a  { text-decoration: none; color: inherit; }
 }
 .news-card {
   background: var(--white); border-radius: var(--radius);
-  padding: 28px; border: 1px solid var(--border);
+  padding: 28px; overflow: hidden; border: 1px solid var(--border);
   box-shadow: var(--shadow); border-top: 3px solid var(--gold);
   transition: transform .3s;
 }
 .news-card:hover { transform: translateY(-4px); }
+.news-card-img { margin: -28px -28px 22px -28px; overflow: hidden; }
+.news-card-img img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; transition: transform .35s; }
+.news-card:hover .news-card-img img { transform: scale(1.04); }
 .news-date  { font-size: .75rem; color: var(--gold); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .news-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--maroon-dark); margin-bottom: 10px; line-height: 1.4; }
 .news-body  { font-size: .88rem; color: var(--text-muted); line-height: 1.7; }
@@ -485,11 +488,14 @@ a  { text-decoration: none; color: inherit; }
 }
 .achievement-card {
   background: linear-gradient(135deg, var(--cream), #fff);
-  border-radius: var(--radius); padding: 24px;
+  border-radius: var(--radius); padding: 24px; overflow: hidden;
   border: 1px solid var(--border); text-align: center;
   box-shadow: var(--shadow); transition: transform .3s;
 }
 .achievement-card:hover { transform: translateY(-4px); }
+.achievement-img { margin: -24px -24px 16px -24px; overflow: hidden; }
+.achievement-img img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .35s; }
+.achievement-card:hover .achievement-img img { transform: scale(1.04); }
 .achievement-icon { font-size: 2rem; margin-bottom: 10px; }
 .achievement-name { font-weight: 700; color: var(--maroon-dark); margin-bottom: 6px; }
 .achievement-text { font-size: .88rem; color: var(--text-muted); line-height: 1.6; }

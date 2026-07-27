@@ -277,5 +277,37 @@ document.getElementById('hamburger').addEventListener('click', () =>
   document.getElementById('navLinks').classList.toggle('open'));
 </script>
 <script src="js/i18n.js"></script>
+<script type="module">
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const app = initializeApp({
+  apiKey:"AIzaSyBpCH8ajVXiLcoEGc7vkIm8EmTkuYCY61o",authDomain:"music-class-83080.firebaseapp.com",
+  projectId:"music-class-83080",storageBucket:"music-class-83080.firebasestorage.app",
+  messagingSenderId:"663663281900",appId:"1:663663281900:web:c320801ef06e18212607c9"
+});
+const db = getFirestore(app);
+function h(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+(async()=>{
+  try {
+    const snap = await getDocs(query(collection(db,'website_faq'),orderBy('order','asc')));
+    if(snap.empty) return;
+    const faqList = document.querySelector('.faq-list');
+    if(!faqList) return;
+    faqList.innerHTML = '';
+    snap.forEach(d=>{
+      const data = d.data();
+      const item = document.createElement('div');
+      item.className = 'faq-item';
+      item.innerHTML = `
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ${h(data.question)}<span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">${h(data.answer||'')}</div>`;
+      faqList.appendChild(item);
+    });
+  } catch(e){ /* keep static fallback */ }
+})();
+</script>
 </body>
 </html>
