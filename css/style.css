@@ -908,18 +908,19 @@ a.contact-value:hover { color: var(--gold); }
 }
 
 .guru-hero {
-  min-height: 100vh; display: flex;
+  height: calc(100vh - var(--nav-h)); display: flex;
+  margin-top: var(--nav-h);
   position: relative; overflow: hidden;
   background: #0b0104;
 }
 
-/* Photo panel — fills left ~57% */
+/* Photo panel — fills left ~47% */
 .guru-hero-img-panel {
-  position: relative; flex: 0 0 57%; overflow: hidden;
+  position: relative; flex: 0 0 47%; overflow: hidden;
 }
 .guru-hero-photo {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: 52% 12%;
+  object-fit: cover; object-position: 48% 18%;
   display: block;
   animation: guruImgReveal 2.4s cubic-bezier(.22,.6,.36,1) both;
 }
@@ -932,7 +933,7 @@ a.contact-value:hover { color: var(--gold); }
 /* Content panel — right side */
 .guru-hero-content {
   flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
-  padding: calc(var(--nav-h) + 28px) 60px 80px 44px;
+  padding: 36px 60px 32px 48px;
   position: relative; z-index: 2;
 }
 .guru-hero-rule {
@@ -1064,8 +1065,8 @@ a.contact-value:hover { color: var(--gold); }
 }
 @media (max-width: 768px) {
   /* Guru hero — stacks vertically on mobile */
-  .guru-hero            { flex-direction: column; }
-  .guru-hero-img-panel  { flex: none; width: 100%; height: 62vh; min-height: 280px; }
+  .guru-hero            { flex-direction: column; height: auto; }
+  .guru-hero-img-panel  { flex: none; width: 100%; height: 55vh; min-height: 260px; }
   .guru-hero-photo      { object-position: 52% 8%; }
   .guru-hero-img-overlay {
     background:
