@@ -908,8 +908,7 @@ a.contact-value:hover { color: var(--gold); }
 }
 
 .guru-hero {
-  height: calc(100vh - var(--nav-h)); display: flex;
-  margin-top: var(--nav-h);
+  height: 100vh; display: flex;
   position: relative; overflow: hidden;
   background: #0b0104;
 }
@@ -933,7 +932,7 @@ a.contact-value:hover { color: var(--gold); }
 /* Content panel — right side */
 .guru-hero-content {
   flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
-  padding: 36px 60px 32px 48px;
+  padding: calc(var(--nav-h) + 28px) 60px 32px 48px;
   position: relative; z-index: 2;
 }
 .guru-hero-rule {
@@ -1065,7 +1064,7 @@ a.contact-value:hover { color: var(--gold); }
 }
 @media (max-width: 768px) {
   /* Guru hero — stacks vertically on mobile */
-  .guru-hero            { flex-direction: column; height: auto; }
+  .guru-hero            { flex-direction: column; height: auto; min-height: 100vh; }
   .guru-hero-img-panel  { flex: none; width: 100%; height: 55vh; min-height: 260px; }
   .guru-hero-photo      { object-position: 52% 8%; }
   .guru-hero-img-overlay {
