@@ -78,46 +78,57 @@
 </section>
 
 <!-- ── GALLERY ─────────────────────────────────────────────────────── -->
+<style>
+  .album-card { cursor:pointer; border-radius:14px; overflow:hidden; background:white;
+    border:1px solid #e5e7eb; transition:transform .2s ease,box-shadow .2s ease;
+    display:flex; flex-direction:column; }
+  .album-card:hover { transform:translateY(-5px); box-shadow:0 14px 36px rgba(0,0,0,.13); }
+  .album-cover { width:100%; aspect-ratio:4/3; overflow:hidden; position:relative;
+    background:#f8f1e4; display:flex; align-items:center; justify-content:center; }
+  .album-cover img { width:100%; height:100%; object-fit:cover; transition:transform .3s; }
+  .album-card:hover .album-cover img { transform:scale(1.04); }
+  .album-cover-empty { font-size:3rem; opacity:.3; }
+  .album-count-badge { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,.55);
+    color:white; font-size:.72rem; padding:3px 9px; border-radius:99px; font-weight:600; }
+  .album-info { padding:12px 15px 16px; flex:1; }
+  .album-name { font-weight:700; font-size:.95rem; color:#1f2937; margin-bottom:3px; line-height:1.35; }
+  .album-meta { font-size:.75rem; color:#6b7280; }
+  .album-desc { font-size:.8rem; color:#6b7280; margin-top:6px; line-height:1.5; }
+  #albumNav { display:none; align-items:center; gap:12px; margin-bottom:22px; flex-wrap:wrap; }
+  #albumNav.visible { display:flex; }
+  #albumNav button { display:flex; align-items:center; gap:6px; background:none;
+    border:1.5px solid #7B1515; color:#7B1515; border-radius:8px;
+    padding:7px 16px; font-size:.88rem; font-weight:700; cursor:pointer; transition:all .15s; }
+  #albumNav button:hover { background:#7B1515; color:white; }
+  #albumNavTitle { font-weight:700; font-size:1rem; color:#1f2937; }
+</style>
 <section class="section">
   <div class="container">
 
-    <!-- Category filters -->
-    <div class="filter-bar" id="catFilterBar">
-      <button class="filter-btn active" data-cat="all" onclick="filterGallery(this)">All Photos</button>
-      <button class="filter-btn" data-cat="Annual Concert" onclick="filterGallery(this)">🎤 Annual Concert</button>
-      <button class="filter-btn" data-cat="Gurpurnima" onclick="filterGallery(this)">🙏 Gurpurnima</button>
-      <button class="filter-btn" data-cat="Competitions" onclick="filterGallery(this)">🏆 Competitions</button>
-      <button class="filter-btn" data-cat="Workshops" onclick="filterGallery(this)">📚 Workshops</button>
-      <button class="filter-btn" data-cat="Riyaz" onclick="filterGallery(this)">🎵 Riyaz Sessions</button>
-      <button class="filter-btn" data-cat="Ceremony" onclick="filterGallery(this)">🎭 Ceremonies</button>
-      <button class="filter-btn" data-cat="Other" onclick="filterGallery(this)">📸 Other</button>
+    <!-- Album back navigation (hidden until inside an album) -->
+    <div id="albumNav">
+      <button onclick="backToAlbums()">← All Albums</button>
+      <span id="albumNavTitle"></span>
     </div>
 
-    <!-- Year filter -->
-    <div class="filter-bar" id="yearFilterBar" style="margin-top:-20px;margin-bottom:28px">
-      <button class="filter-btn active" data-year="all" onclick="filterYear(this)">All Years</button>
-      <!-- Years added dynamically -->
-    </div>
+    <!-- Category filter — populated dynamically -->
+    <div class="filter-bar" id="catFilterBar" style="min-height:40px"></div>
 
-    <!-- Photo count -->
+    <!-- Year filter — populated dynamically -->
+    <div class="filter-bar" id="yearFilterBar" style="margin-top:-20px;margin-bottom:28px;min-height:40px"></div>
+
+    <!-- Count label -->
     <div id="photoCount" style="text-align:right;font-size:.82rem;color:var(--text-muted);margin-bottom:16px"></div>
 
-    <!-- Grid -->
-    <div class="gallery-full-grid" id="galleryFullGrid">
-      <!-- Loaded from Firestore -->
-    </div>
+    <!-- Grid — albums or photos -->
+    <div class="gallery-full-grid" id="galleryFullGrid"></div>
+
     <div id="galleryLoading" style="text-align:center;padding:60px 20px;color:var(--text-muted)">
-      <div style="font-size:2rem;margin-bottom:12px">🖼️</div>
-      Loading photos…
+      <div style="font-size:2rem;margin-bottom:12px">🖼️</div>Loading albums…
     </div>
     <div id="galleryEmpty" class="gallery-empty" style="display:none">
       <div style="font-size:3rem;margin-bottom:12px">📷</div>
-      <p>No photos in this category yet. Check back soon!</p>
-    </div>
-
-    <!-- Load more -->
-    <div id="loadMoreWrap" style="text-align:center;margin-top:40px;display:none">
-      <button class="btn btn-outline" onclick="loadMorePhotos()">Load More Photos</button>
+      <p>No albums yet. Check back soon!</p>
     </div>
   </div>
 </section>
@@ -163,83 +174,25 @@
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-let allPhotos = [];
-let filtered  = [];
-let lbIndex   = 0;
-let activeCat  = 'all';
-let activeYear = 'all';
-
-function filterGallery(btn) {
-  document.querySelectorAll('#catFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeCat = btn.dataset.cat;
-  applyFilters();
-}
-function filterYear(btn) {
-  document.querySelectorAll('#yearFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeYear = btn.dataset.year;
-  applyFilters();
-}
-function applyFilters() {
-  filtered = allPhotos.filter(p => {
-    const catOk  = activeCat  === 'all' || (p.category || 'Other') === activeCat;
-    const yearOk = activeYear === 'all' || (p.year || '') === activeYear;
-    return catOk && yearOk;
-  });
-  renderPhotos();
-}
-function renderPhotos() {
-  const grid = document.getElementById('galleryFullGrid');
-  const empty = document.getElementById('galleryEmpty');
-  const count = document.getElementById('photoCount');
-  grid.innerHTML = '';
-  if (!filtered.length) {
-    empty.style.display = 'block';
-    count.textContent = '';
-    return;
-  }
-  empty.style.display = 'none';
-  count.textContent = `${filtered.length} photo${filtered.length !== 1 ? 's' : ''}`;
-  filtered.forEach((p, i) => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item animate-on-scroll';
-    item.onclick = () => openLightbox(i);
-    item.innerHTML = `
-      <img src="${h(p.imageUrl)}" alt="${h(p.caption) || 'SurSadhana'}" loading="lazy"/>
-      <div class="gallery-item-caption">${h(p.caption) || ''}</div>
-    `;
-    grid.appendChild(item);
-    observer.observe(item);
-  });
-}
-function openLightbox(i) {
-  lbIndex = i;
-  const p = filtered[i];
-  document.getElementById('lightboxImg').src = p.imageUrl;
-  document.getElementById('lightboxCaption').textContent = p.caption || '';
-  document.getElementById('lightbox').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
+// Lightbox controls — state (window.filtered, window.lbIndex) managed by gallery-cms.js module
 function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
   document.body.style.overflow = '';
 }
 function lbNav(dir) {
-  lbIndex = (lbIndex + dir + filtered.length) % filtered.length;
-  openLightbox(lbIndex);
+  const len = (window.filtered || []).length;
+  if (!len) return;
+  window.lbIndex = ((window.lbIndex || 0) + dir + len) % len;
+  window.openLightbox(window.lbIndex);
 }
-function h(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// backToAlbums exposed by gallery-cms.js module via window.backToAlbums
 
 document.addEventListener('keydown', e => {
   if (document.getElementById('lightbox').style.display !== 'flex') return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowRight') lbNav(1);
-  if (e.key === 'ArrowLeft')  lbNav(-1);
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowRight')  lbNav(1);
+  if (e.key === 'ArrowLeft')   lbNav(-1);
 });
-
-const observer = new IntersectionObserver(entries =>
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
 
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -248,7 +201,6 @@ window.addEventListener('scroll', () => {
 });
 document.getElementById('hamburger').addEventListener('click', () =>
   document.getElementById('navLinks').classList.toggle('open'));
-document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 </script>
 <script src="js/i18n.js"></script>
 <script type="module" src="js/gallery-cms.js"></script>
