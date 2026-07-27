@@ -919,7 +919,7 @@ a.contact-value:hover { color: var(--gold); }
 }
 .guru-hero-photo {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: 48% 18%;
+  object-fit: cover; object-position: 48% 38%;
   display: block;
   animation: guruImgReveal 2.4s cubic-bezier(.22,.6,.36,1) both;
 }
