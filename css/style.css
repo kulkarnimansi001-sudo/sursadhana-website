@@ -843,35 +843,91 @@ a.contact-value:hover { color: var(--gold); }
 /* ════════════════════════════════════════════════════════════════════
    GURU PAGE
 ════════════════════════════════════════════════════════════════════ */
-.guru-hero {
-  background: linear-gradient(160deg, var(--maroon-deep) 0%, #1a0505 60%, #3a0808 100%);
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-  padding: calc(var(--nav-h) + 40px) 24px 80px; text-align: center;
+/* ── Guru hero — editorial split ─────────────────────────────────── */
+@keyframes guruImgReveal {
+  from { opacity: 0; transform: scale(1.07); filter: brightness(.65); }
+  to   { opacity: 1; transform: scale(1);    filter: brightness(1); }
 }
-.guru-hero-glow {
-  position: absolute; width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,134,10,.12) 0%, transparent 70%);
-  top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
+@keyframes guruFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes guruRuleGrow {
+  from { width: 0; opacity: 0; }
+  to   { width: 52px; opacity: 1; }
+}
+
+.guru-hero {
+  min-height: 100vh; display: flex;
+  position: relative; overflow: hidden;
+  background: #0b0104;
+}
+
+/* Photo panel — fills left ~57% */
+.guru-hero-img-panel {
+  position: relative; flex: 0 0 57%; overflow: hidden;
 }
 .guru-hero-photo {
-  width: 190px; height: 190px; border-radius: 50%; object-fit: cover;
-  border: 4px solid var(--gold);
-  box-shadow: 0 0 0 10px rgba(200,134,10,.12), 0 20px 60px rgba(0,0,0,.5);
-  margin: 0 auto 28px; display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 52% 12%;
+  display: block;
+  animation: guruImgReveal 1.8s cubic-bezier(.22,.6,.36,1) both;
+}
+/* Multi-directional fade: right edge into content, bottom darkened */
+.guru-hero-img-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to right,  transparent 45%, #0b0104 96%),
+    linear-gradient(to top,    rgba(11,1,4,.75) 0%, transparent 38%),
+    linear-gradient(to bottom, rgba(11,1,4,.45) 0%, transparent 22%);
+}
+
+/* Content panel — right side */
+.guru-hero-content {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: calc(var(--nav-h) + 56px) 60px 80px 44px;
+  position: relative; z-index: 2;
+}
+.guru-hero-rule {
+  height: 2px; background: var(--gold); border-radius: 99px;
+  margin-bottom: 24px;
+  animation: guruRuleGrow .9s cubic-bezier(.22,.6,.36,1) .15s both;
+}
+.guru-hero-eyebrow {
+  font-size: .68rem; font-weight: 700; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
 }
 .guru-hero h1 {
-  font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.4rem);
-  font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  font-weight: 900; line-height: 1.08; margin-bottom: 18px;
+  background: linear-gradient(145deg, #ffffff 55%, #C8860A 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.guru-hero-subtitle { font-size: 1rem; color: rgba(255,255,255,.65); margin-bottom: 22px; }
+.guru-hero-subtitle {
+  font-size: .95rem; color: rgba(255,255,255,.45);
+  margin-bottom: 26px; letter-spacing: .4px;
+}
 .guru-credential {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(200,134,10,.15); border: 1px solid rgba(200,134,10,.4);
-  color: var(--gold); padding: 10px 24px; border-radius: 50px;
-  font-size: .9rem; font-weight: 600; margin-bottom: 32px;
+  background: rgba(200,134,10,.1); border: 1px solid rgba(200,134,10,.32);
+  color: var(--gold); padding: 9px 20px; border-radius: 50px;
+  font-size: .8rem; font-weight: 600; margin-bottom: 38px;
+  align-self: flex-start;
 }
-.guru-hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.guru-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* Scroll cue */
+.guru-hero-scroll {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 52px; color: rgba(255,255,255,.25);
+  font-size: .65rem; letter-spacing: 2.5px; text-transform: uppercase;
+}
+.guru-hero-scroll-line { width: 32px; height: 1px; background: rgba(255,255,255,.22); }
+
+/* Staggered content animations */
+.animate-guru { opacity: 0; animation: guruFadeUp .9s cubic-bezier(.22,.6,.36,1) both; }
 
 .guru-stats {
   display: flex; background: var(--cream); border-top: 3px solid var(--gold);
@@ -960,6 +1016,20 @@ a.contact-value:hover { color: var(--gold); }
   .timeline-spacer    { display: none; }
 }
 @media (max-width: 768px) {
+  /* Guru hero — stacks vertically on mobile */
+  .guru-hero            { flex-direction: column; }
+  .guru-hero-img-panel  { flex: none; width: 100%; height: 62vh; min-height: 280px; }
+  .guru-hero-photo      { object-position: 52% 8%; }
+  .guru-hero-img-overlay {
+    background:
+      linear-gradient(to bottom, transparent 40%, #0b0104 92%),
+      linear-gradient(to top, transparent 70%, rgba(11,1,4,.4) 100%);
+  }
+  .guru-hero-content    { padding: 28px 26px 56px; }
+  .guru-hero h1         { font-size: clamp(2.1rem, 7.5vw, 2.8rem); }
+  .guru-hero-btns       { flex-direction: column; gap: 10px; }
+  .guru-hero-scroll     { display: none; }
+
   .gallery-full-grid  { grid-template-columns: repeat(2, 1fr); }
   .blog-grid          { grid-template-columns: 1fr; }
   .awards-grid        { grid-template-columns: 1fr 1fr; }
