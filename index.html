@@ -287,6 +287,21 @@
   <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();lbNav(1)">&#8250;</button>
 </div>
 
+<!-- ── NEWS MODAL ──────────────────────────────────────────────────── -->
+<div class="news-modal" id="newsModal" onclick="closeNewsModal()">
+  <div class="news-modal-inner" id="newsModalInner" onclick="event.stopPropagation()">
+    <button class="news-modal-close" onclick="closeNewsModal()" aria-label="Close">✕</button>
+    <div id="newsModalImgWrap" style="display:none">
+      <img id="newsModalImgEl" src="" alt="" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:16px 16px 0 0"/>
+    </div>
+    <div class="news-modal-content">
+      <div class="news-date" id="newsModalDate"></div>
+      <h3 class="news-modal-title" id="newsModalTitle"></h3>
+      <div class="news-modal-body" id="newsModalBody"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ── PERFORMANCES ────────────────────────────────────────────────── -->
 <section class="section section-alt" id="performances">
   <div class="container">
@@ -490,6 +505,14 @@
 <!-- Back to top -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (typeof closeNewsModal === 'function') closeNewsModal();
+    if (typeof closeLightbox === 'function') closeLightbox();
+  }
+});
+</script>
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 <script type="module" src="js/cms.js"></script>

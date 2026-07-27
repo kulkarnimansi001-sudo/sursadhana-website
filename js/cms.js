@@ -211,6 +211,39 @@ async function loadFaq() {
 }
 
 /* ── News & Updates ──────────────────────────────────────────────── */
+// News items stored for modal access
+const newsItems = [];
+
+window.openNewsModal = function(idx) {
+  const item = newsItems[idx];
+  if (!item) return;
+  const modal    = document.getElementById('newsModal');
+  const imgWrap  = document.getElementById('newsModalImgWrap');
+  const imgEl    = document.getElementById('newsModalImgEl');
+  const dateEl   = document.getElementById('newsModalDate');
+  const titleEl  = document.getElementById('newsModalTitle');
+  const bodyEl   = document.getElementById('newsModalBody');
+  if (item.imageUrl) {
+    imgEl.src = item.imageUrl;
+    imgWrap.style.display = 'block';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+  dateEl.textContent  = fmtDate(item.date);
+  titleEl.textContent = item.title;
+  bodyEl.textContent  = item.body;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // scroll modal content to top
+  const inner = document.getElementById('newsModalInner');
+  if (inner) inner.scrollTop = 0;
+};
+
+window.closeNewsModal = function() {
+  document.getElementById('newsModal').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
 async function loadNews() {
   try {
     const snap = await getDocs(query(collection(db, 'website_news'), orderBy('date', 'desc'), limit(20)));
@@ -221,15 +254,26 @@ async function loadNews() {
     let count = 0;
     snap.forEach(doc => {
       const d = doc.data();
-      if (d.published === false || count >= 6) return; count++;
-      const card = document.createElement('div');
+      if (d.published === false || count >= 6) return;
+      const idx = newsItems.length;
+      newsItems.push({ title: d.title, body: d.body || '', date: d.date, imageUrl: safeUrl(d.imageUrl) });
+      count++;
+      const card    = document.createElement('div');
       card.className = 'news-card animate-on-scroll';
-      const imgUrl = safeUrl(d.imageUrl);
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.onclick = () => window.openNewsModal(idx);
+      card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') window.openNewsModal(idx); };
+      const imgUrl  = safeUrl(d.imageUrl);
+      const excerpt = (d.body || '').length > 120
+        ? h(d.body.slice(0, 120)).trimEnd() + '…'
+        : h(d.body || '');
       card.innerHTML = `
         ${imgUrl ? `<div class="news-card-img"><img src="${h(imgUrl)}" alt="${h(d.title)}" loading="lazy"/></div>` : ''}
         <div class="news-date">${fmtDate(d.date)}</div>
         <div class="news-title">${h(d.title)}</div>
-        <div class="news-body">${h(d.body)}</div>
+        <div class="news-excerpt">${excerpt}</div>
+        <div class="news-read-more">Read more →</div>
       `;
       grid.appendChild(card);
       observer.observe(card);
