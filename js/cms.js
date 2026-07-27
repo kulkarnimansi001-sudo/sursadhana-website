@@ -269,7 +269,7 @@ async function loadAchievements() {
 /* ── Gallery ─────────────────────────────────────────────────────── */
 async function loadGallery() {
   try {
-    const snap = await getDocs(query(collection(db, 'website_home_gallery'), orderBy('date', 'desc'), limit(30)));
+    const snap = await getDocs(query(collection(db, 'website_gallery'), orderBy('date', 'desc'), limit(30)));
     if (snap.empty) return;
     const grid = document.getElementById('galleryGrid');
     let count = 0;
