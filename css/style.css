@@ -918,18 +918,17 @@ a.contact-value:hover { color: var(--gold); }
   position: relative; flex: 0 0 47%; overflow: hidden;
 }
 .guru-hero-photo {
-  position: absolute; top: var(--nav-h); left: 0;
-  width: 100%; height: calc(100% - var(--nav-h));
-  object-fit: cover; object-position: 48% top;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 48% 6%;
   display: block;
   animation: guruImgReveal 2.4s cubic-bezier(.22,.6,.36,1) both;
 }
-/* Right-edge blend + top fade to blend image into nav */
+/* Right-edge blend + soft top fade into nav */
 .guru-hero-img-overlay {
   position: absolute; inset: 0; pointer-events: none;
   background:
     linear-gradient(to right, transparent 50%, #0b0104 95%),
-    linear-gradient(to bottom, #0b0104 0%, #0b0104 var(--nav-h), rgba(11,1,4,.55) calc(var(--nav-h) + 40px), transparent calc(var(--nav-h) + 100px));
+    linear-gradient(to bottom, rgba(11,1,4,.8) 0%, rgba(11,1,4,.3) 12%, transparent 25%);
 }
 
 /* Content panel — right side */
