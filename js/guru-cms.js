@@ -67,8 +67,6 @@ async function loadGuruPhotos() {
     if (snap.empty) return;
     const photos = snap.docs.map(d => d.data().imageUrl).filter(Boolean);
     if (!photos.length) return;
-    const mainImg = document.getElementById('guruMainPhoto');
-    if (mainImg) mainImg.src = safeUrl(photos[0]);
     const bioImg  = document.getElementById('guroBioPhoto');
     if (bioImg && photos[1]) bioImg.src = safeUrl(photos[1]);
     const thumbs = document.getElementById('guruBioThumbs');

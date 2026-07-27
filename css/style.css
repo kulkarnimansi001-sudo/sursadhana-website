@@ -895,8 +895,8 @@ a.contact-value:hover { color: var(--gold); }
 ════════════════════════════════════════════════════════════════════ */
 /* ── Guru hero — editorial split ─────────────────────────────────── */
 @keyframes guruImgReveal {
-  from { opacity: 0; transform: scale(1.07); filter: brightness(.65); }
-  to   { opacity: 1; transform: scale(1);    filter: brightness(1); }
+  from { transform: scale(1.15); }
+  to   { transform: scale(1); }
 }
 @keyframes guruFadeUp {
   from { opacity: 0; transform: translateY(22px); }
@@ -921,21 +921,18 @@ a.contact-value:hover { color: var(--gold); }
   width: 100%; height: 100%;
   object-fit: cover; object-position: 52% 12%;
   display: block;
-  animation: guruImgReveal 1.8s cubic-bezier(.22,.6,.36,1) both;
+  animation: guruImgReveal 2.4s cubic-bezier(.22,.6,.36,1) both;
 }
-/* Multi-directional fade: right edge into content, bottom darkened */
+/* Right-edge blend only — no top/bottom fade-out */
 .guru-hero-img-overlay {
   position: absolute; inset: 0; pointer-events: none;
-  background:
-    linear-gradient(to right,  transparent 45%, #0b0104 96%),
-    linear-gradient(to top,    rgba(11,1,4,.75) 0%, transparent 38%),
-    linear-gradient(to bottom, rgba(11,1,4,.45) 0%, transparent 22%);
+  background: linear-gradient(to right, transparent 50%, #0b0104 95%);
 }
 
 /* Content panel — right side */
 .guru-hero-content {
-  flex: 1; display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--nav-h) + 56px) 60px 80px 44px;
+  flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+  padding: calc(var(--nav-h) + 28px) 60px 80px 44px;
   position: relative; z-index: 2;
 }
 .guru-hero-rule {
