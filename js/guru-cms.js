@@ -117,12 +117,22 @@ async function loadGuruContent() {
     if (d.lineage && d.lineage.length) {
       const lineageEl = document.getElementById('guruLineage');
       if (lineageEl) {
-        lineageEl.innerHTML = d.lineage.map((node, i) => `
-          ${i > 0 ? '<div class="lineage-connector"></div>' : ''}
-          <div class="lineage-node${node.root ? ' root' : ''}">
-            <div class="lineage-name">${h(node.name)}</div>
-            <div class="lineage-desc">${h(node.desc)}</div>
-          </div>`).join('');
+        lineageEl.innerHTML = d.lineage.map((node, i) => {
+          const photoEl = node.imageUrl
+            ? `<img src="${h(node.imageUrl)}" alt="${h(node.name)}" class="lineage-photo" loading="lazy">`
+            : `<div class="lineage-avatar">🎵</div>`;
+          const badgeEl = node.root ? `<div class="lineage-badge">Mansi's Guru</div>` : '';
+          return `
+            ${i > 0 ? '<div class="lineage-connector"></div>' : ''}
+            <div class="lineage-node${node.root ? ' root' : ''}">
+              ${photoEl}
+              <div class="lineage-info">
+                <div class="lineage-name">${h(node.name)}</div>
+                <div class="lineage-desc">${h(node.desc)}</div>
+                ${badgeEl}
+              </div>
+            </div>`;
+        }).join('');
       }
       if (d.lineage_note) {
         const noteEl = document.getElementById('guruLineageNote');
