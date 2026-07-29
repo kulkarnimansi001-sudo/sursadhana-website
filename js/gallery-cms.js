@@ -194,6 +194,14 @@ async function init() {
       });
 
     renderAlbumGrid();
+
+    // Deep-link: gallery.html#album-{albumId} navigates directly into that album
+    const hash = location.hash;
+    if (hash.startsWith('#album-')) {
+      const targetId = hash.slice(7);
+      const target = allAlbums.find(a => a.id === targetId);
+      if (target) openAlbum(target);
+    }
   } catch(e) {
     console.error('Gallery load error', e);
     document.getElementById('galleryLoading').textContent = 'Failed to load. Please try again.';

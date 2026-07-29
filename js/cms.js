@@ -267,27 +267,30 @@ window.openNewsModal = async function(idx) {
   titleEl.textContent = item.title;
   bodyEl.textContent  = item.body;
 
-  // Photo album
+  // Photo album — show a linked card; clicking navigates to gallery page
   if (albumEl && item.albumId) {
     albumEl.innerHTML = '<p style="text-align:center;padding:12px;color:#9CA3AF;font-size:.82rem">Loading album…</p>';
     try {
-      const [albumSnap, photosSnap] = await Promise.all([
-        getDoc(doc(db, 'website_albums', item.albumId)),
-        getDocs(query(collection(db, 'website_albums', item.albumId, 'photos'), orderBy('order', 'asc'))),
-      ]);
-      const albumName = albumSnap.data()?.name || 'Photo Album';
-      const photos = photosSnap.docs.map(d => d.data()).filter(p => p.imageUrl);
-      if (photos.length) {
+      const albumSnap = await getDoc(doc(db, 'website_albums', item.albumId));
+      const albumData = albumSnap.data();
+      if (albumData) {
+        const name  = albumData.name    || 'Photo Album';
+        const cover = albumData.coverUrl || '';
+        const cnt   = albumData.photoCount ? `${albumData.photoCount} photo${albumData.photoCount !== 1 ? 's' : ''}` : '';
+        const href  = `gallery.html#album-${h(item.albumId)}`;
         albumEl.innerHTML = `
           <div style="padding:16px;border-top:1px solid #e5e7eb;margin-top:4px">
-            <div style="font-size:.78rem;font-weight:700;color:#6B7280;margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">📸 ${h(albumName)}</div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:5px">
-              ${photos.map(p => `<div style="aspect-ratio:1;overflow:hidden;border-radius:6px;cursor:pointer"
-                onclick="window.open('${h(p.imageUrl)}','_blank')">
-                <img src="${h(p.imageUrl)}" alt="${h(p.caption||'')}"
-                  loading="lazy" style="width:100%;height:100%;object-fit:cover"/>
-              </div>`).join('')}
-            </div>
+            <div style="font-size:.78rem;font-weight:700;color:#6B7280;margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">📸 Linked Album</div>
+            <a href="${href}" style="display:flex;align-items:center;gap:14px;text-decoration:none;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;padding:12px">
+              ${cover
+                ? `<img src="${h(cover)}" alt="${h(name)}" style="width:72px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0"/>`
+                : `<div style="width:72px;height:72px;background:#E5E7EB;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0">🎵</div>`}
+              <div style="min-width:0">
+                <div style="font-weight:700;color:#111827;font-size:.95rem;margin-bottom:3px">${h(name)}</div>
+                ${cnt ? `<div style="font-size:.8rem;color:#6B7280">${cnt}</div>` : ''}
+                <div style="font-size:.82rem;color:#C8860A;margin-top:5px;font-weight:600">View Album in Gallery →</div>
+              </div>
+            </a>
           </div>`;
       } else {
         albumEl.innerHTML = '';
