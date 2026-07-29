@@ -95,7 +95,13 @@ async function loadSettings() {
       setHref('contactEmailLink', `mailto:${d.email}`);
     }
     if (d.address_line1 || d.address_line2) {
-      setEl('contactAddress', [d.address_line1, d.address_line2].filter(Boolean).join('<br>'));
+      const addrEl = document.getElementById('contactAddress');
+      if (addrEl) {
+        addrEl.innerHTML = [d.address_line1, d.address_line2]
+          .filter(Boolean)
+          .map(l => h(l).replace(/&lt;br\s*\/?&gt;/gi, '<br>'))
+          .join('<br>');
+      }
     }
     if (d.schedule) {
       setEl('contactSchedule', d.schedule);
