@@ -214,27 +214,83 @@ async function loadFaq() {
 // News items stored for modal access
 const newsItems = [];
 
-window.openNewsModal = function(idx) {
+function extractYtId(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+window.openNewsModal = async function(idx) {
   const item = newsItems[idx];
   if (!item) return;
   const modal    = document.getElementById('newsModal');
   const imgWrap  = document.getElementById('newsModalImgWrap');
-  const imgEl    = document.getElementById('newsModalImgEl');
   const dateEl   = document.getElementById('newsModalDate');
   const titleEl  = document.getElementById('newsModalTitle');
   const bodyEl   = document.getElementById('newsModalBody');
-  if (item.imageUrl) {
-    imgEl.src = item.imageUrl;
+  const albumEl  = document.getElementById('newsModalAlbum');
+
+  // Reset
+  if (albumEl) albumEl.innerHTML = '';
+
+  // Media section: YouTube embed > uploaded image > Instagram link > nothing
+  const ytId = extractYtId(item.mediaUrl);
+  const isIg  = item.mediaUrl && item.mediaUrl.includes('instagram.com');
+  if (ytId) {
+    imgWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?rel=0" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen style="width:100%;aspect-ratio:16/9;display:block;border-radius:16px 16px 0 0"></iframe>`;
+    imgWrap.style.display = 'block';
+  } else if (item.imageUrl) {
+    imgWrap.innerHTML = `<img src="${h(item.imageUrl)}" alt="" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:16px 16px 0 0"/>`;
+    imgWrap.style.display = 'block';
+  } else if (isIg) {
+    imgWrap.innerHTML = `<a href="${h(item.mediaUrl)}" target="_blank" rel="noopener noreferrer"
+      style="display:flex;align-items:center;justify-content:center;gap:10px;padding:18px 16px;
+             background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+             border-radius:16px 16px 0 0;text-decoration:none;color:white;font-weight:700;font-size:.95rem">
+      📸 View on Instagram →
+    </a>`;
     imgWrap.style.display = 'block';
   } else {
+    imgWrap.innerHTML = '';
     imgWrap.style.display = 'none';
   }
+
   dateEl.textContent  = fmtDate(item.date);
   titleEl.textContent = item.title;
   bodyEl.textContent  = item.body;
+
+  // Photo album
+  if (albumEl && item.albumId) {
+    albumEl.innerHTML = '<p style="text-align:center;padding:12px;color:#9CA3AF;font-size:.82rem">Loading album…</p>';
+    try {
+      const [albumSnap, photosSnap] = await Promise.all([
+        getDoc(doc(db, 'website_albums', item.albumId)),
+        getDocs(query(collection(db, 'website_albums', item.albumId, 'photos'), orderBy('order', 'asc'))),
+      ]);
+      const albumName = albumSnap.data()?.name || 'Photo Album';
+      const photos = photosSnap.docs.map(d => d.data()).filter(p => p.imageUrl);
+      if (photos.length) {
+        albumEl.innerHTML = `
+          <div style="padding:16px;border-top:1px solid #e5e7eb;margin-top:4px">
+            <div style="font-size:.78rem;font-weight:700;color:#6B7280;margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">📸 ${h(albumName)}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:5px">
+              ${photos.map(p => `<div style="aspect-ratio:1;overflow:hidden;border-radius:6px;cursor:pointer"
+                onclick="window.open('${h(p.imageUrl)}','_blank')">
+                <img src="${h(p.imageUrl)}" alt="${h(p.caption||'')}"
+                  loading="lazy" style="width:100%;height:100%;object-fit:cover"/>
+              </div>`).join('')}
+            </div>
+          </div>`;
+      } else {
+        albumEl.innerHTML = '';
+      }
+    } catch(e) { albumEl.innerHTML = ''; }
+  }
+
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  // scroll modal content to top
   const inner = document.getElementById('newsModalInner');
   if (inner) inner.scrollTop = 0;
 };
@@ -256,20 +312,26 @@ async function loadNews() {
       const d = doc.data();
       if (d.published === false || count >= 6) return;
       const idx = newsItems.length;
-      newsItems.push({ title: d.title, body: d.body || '', date: d.date, imageUrl: safeUrl(d.imageUrl) });
+      const mediaUrl = safeUrl(d.mediaUrl || '');
+      const ytId = extractYtId(mediaUrl);
+      // Card thumbnail: uploaded photo > YouTube auto-thumbnail > nothing
+      const thumb = d.imageUrl ? safeUrl(d.imageUrl)
+                  : ytId      ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+                  : '';
+      newsItems.push({ title: d.title, body: d.body || '', date: d.date,
+                       imageUrl: safeUrl(d.imageUrl), mediaUrl, albumId: d.albumId || '' });
       count++;
-      const card    = document.createElement('div');
+      const card = document.createElement('div');
       card.className = 'news-card animate-on-scroll';
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.onclick = () => window.openNewsModal(idx);
       card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') window.openNewsModal(idx); };
-      const imgUrl  = safeUrl(d.imageUrl);
       const excerpt = (d.body || '').length > 120
         ? h(d.body.slice(0, 120)).trimEnd() + '…'
         : h(d.body || '');
       card.innerHTML = `
-        ${imgUrl ? `<div class="news-card-img"><img src="${h(imgUrl)}" alt="${h(d.title)}" loading="lazy"/></div>` : ''}
+        ${thumb ? `<div class="news-card-img"><img src="${h(thumb)}" alt="${h(d.title)}" loading="lazy"/></div>` : ''}
         <div class="news-date">${fmtDate(d.date)}</div>
         <div class="news-title">${h(d.title)}</div>
         <div class="news-excerpt">${excerpt}</div>
